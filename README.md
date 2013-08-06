@@ -7,7 +7,7 @@ like pads or other traces.) As a pleasant side effect, using topographic routing
 cool stuff like push-aside routing and auto-complete. 
 
 ... Why isn't there anything in the repository?
-===============================================
+-----------------------------------------------
 
 As part of my internship last summer I built a web application using fun new technologies like WebRTC and HTML5 APIs. 
 I had a great time and learned a lot, but by the end of the summer I was spending most of my time refactoring the 

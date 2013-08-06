@@ -6,7 +6,7 @@ Router uses a funky topographic algorithm for routing the traces. (Think of rubb
 like pads or other traces.) As a pleasant side effect, using topographic routing should also allow me to implement 
 cool stuff like push-aside routing and auto-complete. 
 
-... Why isn't there anything in the repository?
+... Why isn't there any code in the repository?
 -----------------------------------------------
 
 As part of my internship last summer I built a web application using fun new technologies like WebRTC and HTML5 APIs. 

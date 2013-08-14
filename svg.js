@@ -39,10 +39,10 @@ var Stretch = function(obstacleA, wrapDirectionA,  obstacleB, wrapDirectionB) {
         }
     }
     
-    if (wrapDirectionA === ANTI_CLOCKWISE) {
+    else if (wrapDirectionA === ANTI_CLOCKWISE) {
         
         if (wrapDirectionB === CLOCKWISE) {
-
+            
             /*this.start = {
                 x: obstacleA.x + obstacleA.radius*Math.sin(alpha),
                 y: obstacleA.y + obstacleA.radius*Math.cos(alpha),
@@ -63,6 +63,7 @@ var Stretch = function(obstacleA, wrapDirectionA,  obstacleB, wrapDirectionB) {
             this.end = getPoint(obstacleB, obstacleB.radius+20, angleOfEnd);
         }
     }
+    
     else if (wrapDirectionA === CLOCKWISE) {
         
         if (wrapDirectionB === ANTI_CLOCKWISE) {
@@ -258,7 +259,7 @@ var SVG = function (width, height) {
 };
         
 
-window.onload = function() {
+var start = function() {
     
     var topObstacle =    { x: 295, y: 105, radius: 75 };
     var bottomObstacle = { x: 430, y: 260, radius: 80 };
@@ -291,7 +292,7 @@ window.onload = function() {
 
 };
 
-
+window.onload = start;
 
 
 

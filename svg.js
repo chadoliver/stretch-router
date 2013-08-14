@@ -119,37 +119,18 @@ var getAngle = function (point, origin) {
 
 var getPoint = function (origin, radius, angle) {
     
+    //If you rotate point (px, py) around point (ox, oy) by angle theta you'll get:
+    //p'x = cos(theta) * (px-ox) - sin(theta) * (py-oy) + ox
+    //p'y = sin(theta) * (px-ox) + cos(theta) * (py-oy) + oy
+    
     angle = angle % (2*Math.PI);        // so angle is in the range (0, 2*Math.PI).
     
-    if (angle < Math.PI/2) {
-        // upper right quadrant
-        return {
-            x: origin.x + radius*Math.cos(angle),
-            y: origin.y - radius*Math.sin(angle),
-        };
-    }
-    else if (angle < Math.PI) {
-        // upper left quadrant
-        return {
-            x: origin.x - radius*Math.cos(Math.PI - angle),
-            y: origin.y - radius*Math.sin(Math.PI - angle),
-        };
-    }
-    else if (angle < 3*Math.PI/2) {
-        // lower left quadrant
-        return {
-            x: origin.x - radius*Math.cos(angle - Math.PI),
-            y: origin.y + radius*Math.sin(angle - Math.PI),
-        };
-    }
-    else {
-        // lower right quadrant
-        return {
-            x: origin.x + radius*Math.cos(2*Math.PI - angle),
-            y: origin.y + radius*Math.sin(2*Math.PI - angle),
-        };
-    }
+    return {
+        x: origin.x + radius*Math.cos(angle),
+        y: origin.y - radius*Math.sin(angle),
+    };
 };
+
 
 var Wrap = function (start, end, center) {
     

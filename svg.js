@@ -55,8 +55,9 @@ var Stretch = function(obstacleA, wrapDirectionA,  obstacleB, wrapDirectionB) {
         
         else if (wrapDirectionB === ANTI_CLOCKWISE) {
             
-            apparentAngularRadius = Math.asin((obstacleB.radius + obstacleA.radius + 2*TRACK_SPACING) / distanceBetweenCenters); 
-            angleOfEnd = Math.PI/2 + angleBetweenCenters + apparentAngularRadius;
+            var radiusDifference = obstacleB.radius - obstacleA.radius;
+            apparentAngularRadius = Math.asin(radiusDifference / distanceBetweenCenters); 
+            angleOfEnd = angleBetweenCenters - apparentAngularRadius - Math.PI/2;
             angleOfStart = angleOfEnd;
             
             this.start = getPoint(obstacleA, obstacleA.radius+20, angleOfStart);
@@ -79,7 +80,9 @@ var Stretch = function(obstacleA, wrapDirectionA,  obstacleB, wrapDirectionB) {
         }
         
         else if (wrapDirectionB === CLOCKWISE) {
-            apparentAngularRadius = Math.asin((obstacleB.radius + obstacleA.radius + 2*TRACK_SPACING) / distanceBetweenCenters); 
+            
+            var radiusDifference = obstacleB.radius - obstacleA.radius;
+            apparentAngularRadius = Math.asin(radiusDifference / distanceBetweenCenters); 
             angleOfEnd = Math.PI/2 + angleBetweenCenters + apparentAngularRadius;
             angleOfStart = angleOfEnd;
             

@@ -173,10 +173,15 @@ var Wrap = function (start, end, center) {
 
 var SVG = function (width, height) {
     
+    var context = document.getElementById("svgBox");
+    while (context.firstChild) {
+        context.removeChild(context.firstChild);
+    }
+    
     this.root = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     this.root.setAttribute("width", "688");
     this.root.setAttribute("height", "300");
-    document.getElementById("svgBox").appendChild(this.root);
+    context.appendChild(this.root);
     
     // create the group for obstacles
     this.obstacles = document.createElementNS("http://www.w3.org/2000/svg", "g");
@@ -261,12 +266,12 @@ var SVG = function (width, height) {
 
 var start = function() {
     
-    var topObstacle =    { x: 295, y: 105, radius: 75 };
-    var bottomObstacle = { x: 430, y: 260, radius: 80 };
-    var topStart =       { x: 144, y: 140, radius: 20 };
-    var bottomStart =    { x: 100, y: 260, radius: 20 };
-    var topEnd =         { x: 600, y: 80,  radius: 20 };
-    var bottomEnd =      { x: 550, y: 180, radius: 20 };
+    var topObstacle =    { x: 295-50, y: 105, radius: 75 };
+    var bottomObstacle = { x: 430-50, y: 260, radius: 80 };
+    var topStart =       { x: 144-50, y: 140, radius: 20 };
+    var bottomStart =    { x: 100-50, y: 260, radius: 20 };
+    var topEnd =         { x: 600-50, y: 80,  radius: 20 };
+    var bottomEnd =      { x: 550-50, y: 180, radius: 20 };
     
     var svg = new SVG();
     

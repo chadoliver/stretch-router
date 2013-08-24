@@ -52,12 +52,17 @@ var scene;
             labels.setAttribute("class", "labels");
             svg.appendChild(labels);
 
+            var annotations = document.createElementNS("http://www.w3.org/2000/svg", 'g');
+            annotations.setAttribute("class", "annotations");
+            svg.appendChild(annotations);
+
             this.groups = {
                 obstacles: obstacles,
                 innerOrbits: innerOrbits,
                 outerOrbits: outerOrbits,
                 tracks: tracks,
-                labels: labels
+                labels: labels,
+                annotations: annotations
             };
         }
         return Scene;
@@ -77,6 +82,7 @@ var obstacle;
             this.x = x;
             this.y = y;
             this.radius = radius;
+            this.effectiveRadius = this.radius + c.TRACK_SPACING;
         }
         Obstacle.prototype.fixedModulo = function (input, modulus) {
             // This messy equation is required because javascript doesn't give the correct value for
@@ -165,11 +171,10 @@ var obstacle;
                 return label;
             };
 
-            var ringOneRadius = this.radius + c.TRACK_SPACING - c.TRACK_WIDTH / 2;
+            var ringOneRadius = this.effectiveRadius - c.TRACK_WIDTH / 2;
 
             var element;
 
-            var dotRadius = 7.5;
             element = buildCircle(this.x, this.y, this.radius);
             scene.groups.obstacles.appendChild(element);
 
@@ -318,9 +323,71 @@ var stretch;
     stretch.Stretch = Stretch;
 })(stretch || (stretch = {}));
 /// <reference path="./common.ts"/>
+/// <reference path="./scene.ts"/>
+/// <reference path="./obstacle.ts"/>
+var path;
+(function (path) {
+    
+    var c = constants;
+    var Scene = scene.Scene;
+    var Obstacle = obstacle.Obstacle;
+    var Path = path.Path;
+
+    var Path = (function () {
+        function Path(start, width) {
+            this.instructions = [];
+            this.width = width;
+            this.pathElement = document.createElementNS("http://www.w3.org/2000/svg", 'path');
+            this.moveTo(start);
+        }
+        Path.prototype.moveTo = function (dest) {
+            this.instructions.push("M", dest.x, dest.y);
+            this.currentEndPoint = dest;
+        };
+
+        Path.prototype.lineTo = function (dest) {
+            this.instructions.push("L ", dest.x, dest.y);
+            this.currentEndPoint = dest;
+        };
+
+        Path.prototype.arcTo = function (obs, dest, wrapMode) {
+            if (wrapMode === c.CENTER)
+                return;
+
+            var angularDistance = obs.angularLengthOfArc(this.currentEndPoint, dest, wrapMode);
+
+            var rx = obs.effectiveRadius;
+            var ry = obs.effectiveRadius;
+            var xAxisRot = 0;
+            var largeArcFlag = (angularDistance > Math.PI) ? 1 : 0;
+            var sweepFlag = (wrapMode === c.CLOCKWISE) ? 1 : 0;
+            var x = dest.x;
+            var y = dest.y;
+
+            this.instructions.push("A", rx, ry, xAxisRot, largeArcFlag, sweepFlag, x, y);
+            this.currentEndPoint = dest;
+        };
+
+        Path.prototype.paint = function (scene, groupId) {
+            var instructionString = this.instructions.join(" ");
+
+            this.pathElement.setAttribute("d", instructionString);
+            this.pathElement.setAttribute("stroke-width", this.width.toString());
+            scene.groups[groupId].appendChild(this.pathElement);
+
+            return this;
+        };
+        return Path;
+    })();
+    path.Path = Path;
+    ;
+})(path || (path = {}));
+;
+/// <reference path="./common.ts"/>
 /// <reference path="./stretch.ts"/>
 /// <reference path="./scene.ts"/>
 /// <reference path="./obstacle.ts"/>
+/// <reference path="./path.ts"/>
 var track;
 (function (track) {
     
@@ -328,52 +395,20 @@ var track;
     var Stretch = stretch.Stretch;
     var Scene = scene.Scene;
     var Obstacle = obstacle.Obstacle;
+    var Path = path.Path;
 
     var Track = (function () {
         function Track(startObs, width) {
-            this.instructions = [];
             this.width = width;
-
             this.currentObs = startObs;
             this.currentWrapMode = c.CENTER;
-
-            this.pathElement = document.createElementNS("http://www.w3.org/2000/svg", 'path');
-            this.moveTo(startObs);
+            this.path = new Path(startObs, width);
         }
-        Track.prototype.moveTo = function (dest) {
-            this.instructions.push("M", dest.x, dest.y);
-            this.currentLineEndPoint = dest;
-        };
-
-        Track.prototype.lineTo = function (dest) {
-            this.instructions.push("L ", dest.x, dest.y);
-            this.currentLineEndPoint = dest;
-        };
-
-        Track.prototype.arcTo = function (dest) {
-            if (this.currentWrapMode === c.CENTER)
-                return;
-
-            var effectiveRadius = this.currentObs.radius + c.TRACK_SPACING;
-            var angularDistance = this.currentObs.angularLengthOfArc(this.currentLineEndPoint, dest, this.currentWrapMode);
-
-            var rx = effectiveRadius;
-            var ry = effectiveRadius;
-            var xAxisRot = 0;
-            var largeArcFlag = (angularDistance > Math.PI) ? 1 : 0;
-            var sweepFlag = (this.currentWrapMode === c.CLOCKWISE) ? 1 : 0;
-            var x = dest.x;
-            var y = dest.y;
-
-            this.instructions.push("A", rx, ry, xAxisRot, largeArcFlag, sweepFlag, x, y);
-            this.currentLineEndPoint = dest;
-        };
-
         Track.prototype.nextSegment = function (nextObs, direction) {
             var stretch = new Stretch(this.currentObs, this.currentWrapMode, nextObs, direction);
 
-            this.arcTo(stretch.start);
-            this.lineTo(stretch.end);
+            this.path.arcTo(this.currentObs, stretch.start, this.currentWrapMode);
+            this.path.lineTo(stretch.end);
 
             this.currentObs = nextObs;
             this.currentWrapMode = direction;
@@ -398,11 +433,7 @@ var track;
         };
 
         Track.prototype.paint = function (scene) {
-            var instructionString = this.instructions.join(" ");
-
-            this.pathElement.setAttribute("d", instructionString);
-            this.pathElement.setAttribute("stroke-width", this.width.toString());
-            scene.groups.tracks.appendChild(this.pathElement);
+            this.path.paint(scene, 'tracks');
 
             return this;
         };
@@ -440,7 +471,8 @@ var paintableSet;
 /// <reference path="./obstacle.ts"/>
 /// <reference path="./paintableSet.ts"/>
 /// <reference path="./scene.ts"/>
-var SVG_WIDTH = 688;
+/// <reference path="./path.ts"/>
+var SVG_WIDTH = 690;
 
 var examples;
 (function (examples) {
@@ -451,6 +483,7 @@ var examples;
     var Track = track.Track;
     var Obstacle = obstacle.Obstacle;
     var PaintableSet = paintableSet.PaintableSet;
+    var Path = path.Path;
 
     /*
     var topObstacle = new Obstacle(245, 105, 75, "topObstacle");
@@ -521,37 +554,38 @@ var examples;
             tracks.paint(scene);
         },
         thirdExample: function (element) {
+            var SVG_HEIGHT = 350;
+
             var scene = new Scene({
                 parent: element,
                 width: SVG_WIDTH,
-                height: 350
+                height: SVG_HEIGHT
             });
 
+            var halfHeight = SVG_HEIGHT / 2;
             var obs = PaintableSet({
-                r1c1: new Obstacle(194, 75, 7.5),
-                r1c2: new Obstacle(294, 75, 7.5),
-                r1c3: new Obstacle(394, 75, 7.5),
-                r1c4: new Obstacle(494, 75, 7.5),
-                r2c1: new Obstacle(194, 175, 7.5),
-                r2c2: new Obstacle(294, 175, 7.5),
-                r2c3: new Obstacle(394, 175, 7.5),
-                r2c4: new Obstacle(494, 175, 7.5),
-                r3c1: new Obstacle(194, 275, 7.5),
-                r3c2: new Obstacle(294, 275, 7.5),
-                r3c3: new Obstacle(394, 275, 7.5),
-                r3c4: new Obstacle(494, 275, 7.5)
+                left: new Obstacle(halfHeight + 10, 175, 30),
+                right: new Obstacle(SVG_WIDTH - halfHeight - 70, 175, 50)
             });
-
-            var tracks = PaintableSet({
-                foo: new Track(obs.r2c1, c.TRACK_WIDTH),
-                bar: new Track(obs.r1c2, c.TRACK_WIDTH),
-                baz: new Track(obs.r1c3, c.TRACK_WIDTH)
-            });
-
-            tracks.foo.clockwise(obs.r2c2).clockwise(obs.r3c3).anticlockwise(obs.r2c2).center(obs.r3c1);
-
             obs.paint(scene);
-            tracks.paint(scene);
+
+            var buildCircle = function (x, y, radius) {
+                var circle = document.createElementNS("http://www.w3.org/2000/svg", 'circle');
+                circle.setAttribute("cx", x.toString());
+                circle.setAttribute("cy", y.toString());
+                circle.setAttribute("r", radius.toString());
+                return circle;
+            };
+
+            var element = buildCircle(obs.right.x, obs.right.y, obs.right.effectiveRadius + obs.left.effectiveRadius);
+            scene.groups.innerOrbits.appendChild(element);
+
+            var path = new Path(obs.left, 2);
+            var stretch = new Stretch(obs.left, c.CENTER, obs.right, c.CLOCKWISE);
+            path.lineTo(stretch.end);
+            path.lineTo(obs.right);
+            path.lineTo(obs.left);
+            path.paint(scene, 'annotations');
         }
     };
 

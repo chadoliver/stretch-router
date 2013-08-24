@@ -4,8 +4,9 @@
 /// <reference path="./obstacle.ts"/>
 /// <reference path="./paintableSet.ts"/>
 /// <reference path="./scene.ts"/>
+/// <reference path="./path.ts"/>
 
-var SVG_WIDTH = 688;
+var SVG_WIDTH = 690;
 
 module examples {
     
@@ -16,6 +17,7 @@ module examples {
     import Track = track.Track;
     import Obstacle = obstacle.Obstacle;
     import PaintableSet = paintableSet.PaintableSet;
+    import Path = path.Path;
     
     /*
     var topObstacle = new Obstacle(245, 105, 75, "topObstacle");
@@ -105,40 +107,41 @@ module examples {
         
         thirdExample: function (element:Element) {
             
+            var SVG_HEIGHT = 350;
+            
             var scene = new Scene({
                 parent: element,
                 width: SVG_WIDTH,
-                height: 350,
+                height: SVG_HEIGHT,
             });
-    
+            
+            var halfHeight = SVG_HEIGHT / 2
             var obs = PaintableSet({
-                r1c1: new Obstacle(194, 75,  7.5),
-                r1c2: new Obstacle(294, 75,  7.5),
-                r1c3: new Obstacle(394, 75,  7.5),
-                r1c4: new Obstacle(494, 75,  7.5),
-                r2c1: new Obstacle(194, 175, 7.5),
-                r2c2: new Obstacle(294, 175, 7.5),
-                r2c3: new Obstacle(394, 175, 7.5),
-                r2c4: new Obstacle(494, 175, 7.5),
-                r3c1: new Obstacle(194, 275, 7.5),
-                r3c2: new Obstacle(294, 275, 7.5),
-                r3c3: new Obstacle(394, 275, 7.5),
-                r3c4: new Obstacle(494, 275, 7.5),
+                left : new Obstacle(halfHeight+10, 175, 30),
+                right : new Obstacle(SVG_WIDTH-halfHeight-70, 175, 50),
             });
-            
-            var tracks = PaintableSet({
-                foo: new Track( obs.r2c1, c.TRACK_WIDTH ),
-                bar: new Track( obs.r1c2, c.TRACK_WIDTH ),
-                baz: new Track( obs.r1c3, c.TRACK_WIDTH ),
-            });
-            
-            tracks.foo.clockwise( obs.r2c2 )
-                      .clockwise( obs.r3c3 )
-                      .anticlockwise( obs.r2c2 )
-                      .center( obs.r3c1 );
-            
             obs.paint(scene);
-            tracks.paint(scene);
+    
+            var buildCircle = function (x: number, y: number, radius: number) :Element {
+                
+                var circle :Element = document.createElementNS("http://www.w3.org/2000/svg", 'circle');
+                circle.setAttribute("cx", x.toString());
+                circle.setAttribute("cy", y.toString());
+                circle.setAttribute("r", radius.toString());
+                return circle;
+            };
+
+            var element = buildCircle(obs.right.x, obs.right.y, obs.right.effectiveRadius + obs.left.effectiveRadius);
+            scene.groups.innerOrbits.appendChild(element);
+            
+            
+            var path = new Path(obs.left, 2);
+            var stretch = new Stretch(obs.left, c.CENTER, obs.right, c.CLOCKWISE);
+            path.lineTo(stretch.end);
+            path.lineTo(obs.right);
+            path.lineTo(obs.left);
+            path.paint(scene, 'annotations');
+            
         },
         
     };

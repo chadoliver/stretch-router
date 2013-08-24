@@ -1,0 +1,139 @@
+/*
+@color_one:   #202724;
+@color_two:   #8b876f;
+@color_three: #f2e6bb;
+@color_four:  #63bd99;
+@color_five:  #dd4225;
+
+@pageBackground_c:  @color_three;
+@headingText_c:     @color_five;
+@articleText_c:     @color_one;
+@svgBackground_c:   @color_four;
+@obstacle_c:        @color_five;
+@track_c:           @color_one;
+//*/
+
+//*
+@orange:    #ff5300;
+@white:     #ffffff;
+@skyBlue:   #00b4f8;
+@navyBlue:  #263248;
+@lightGrey: #dcdcdc;
+@darkGrey:  #bebebe;
+
+@pageBackground_c:  @white;
+@headingText_c:     @orange;
+@articleText_c:     @navyBlue;
+@svgBackground_c:   @skyBlue;
+@obstacle_c:        @white;
+@track_c:           @orange;
+//*/
+
+ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, 
+ acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong,
+ sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, 
+ caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, 
+ footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+    display: block;
+}
+
+body {
+    background-color: @pageBackground_c;
+}
+header, footer, h1, h2, h3, h4 {
+    color: @headingText_c;
+    font-family:"PT Sans", sans-serif;
+    font-weight: 300;
+    letter-spacing: -0.05em;
+    margin: .3em 0 .1em 0;
+}
+h1 {
+    font-size: 64px;
+    font-weight: 700;
+}
+h2 {
+    font-size: 36px;
+}
+h3 {
+    font-size: 22px;
+    font-style: italic;
+}
+
+article {
+    position: relative;
+    width: 690px;
+    margin: 0 auto 50px auto;
+    line-height: 1.5;
+    color: @articleText_c;
+}
+article p {
+    font-family:'PT Serif', serif;
+    padding-bottom: 0.5em;
+}
+figure {
+    margin: 0.5em auto 1em auto;
+    padding: 0;
+    width: 690px;
+    
+    figcaption {
+        line-height: 1;
+        margin: 0;
+        font-size: 0.8em;
+        font-family:'PT Serif', serif;
+        font-style: italic;
+    }
+    
+    img, svg {
+        max-width: 690px;
+        width: auto;
+        height: auto;
+        margin: auto 0;
+        border-radius: 10px;
+    }
+    
+    svg {
+        /*background-color: #ddedf7;*/
+        /*border: solid 1px #bdcdd7;*/
+        background-color: @svgBackground_c;
+        
+        .obstacles {
+            stroke: @obstacle_c;
+            fill: @obstacle_c;
+            fill-opacity: 1;
+            stroke-opacity: 0;
+            stroke-width: 1;
+            stroke-linecap: round;
+        }
+        
+        .innerOrbits, .outerOrbits {
+            fill: transparent;
+            stroke: @obstacle_c;
+            stroke-width: 1;
+            stroke-linecap: round;
+            stroke-dasharray: 5, 5;
+            stroke-opacity: 1;
+        }
+        
+        .tracks {
+            stroke-opacity: 1;
+            stroke: @track_c;
+            /*stroke-width: 5;*/
+            stroke-linecap: round;
+            fill: transparent;
+        }
+        
+        .labels {
+            stroke: black;
+            fill: black;
+        }
+    }
+}

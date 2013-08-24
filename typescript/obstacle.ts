@@ -12,11 +12,14 @@ module obstacle {
         public x: number;
         public y: number;
         public radius: number;
+        
+        public effectiveRadius: number;  // this is the effective radius of the obstacle, after accounting for track spacing.
 
         constructor(x:number, y:number, radius:number) {
             this.x = x;
             this.y = y;
             this.radius = radius;
+            this.effectiveRadius = this.radius + c.TRACK_SPACING;
         }
         
         private fixedModulo(input, modulus) {
@@ -118,11 +121,10 @@ module obstacle {
                 return label;
             };
 
-            var ringOneRadius = this.radius + c.TRACK_SPACING - c.TRACK_WIDTH/2;
+            var ringOneRadius = this.effectiveRadius - c.TRACK_WIDTH/2;
 
             var element :Element;
             
-            var dotRadius = 7.5; // = this.radius;
             element = buildCircle(this.x, this.y, this.radius);
             scene.groups.obstacles.appendChild(element);
 

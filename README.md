@@ -1,0 +1,1 @@
+This branch holds the source for the documentation website. You can view it in action [here](http://chadoliver.github.io/vulcan/).

@@ -109,12 +109,16 @@ module examples {
         
         for (var id in recipes) {
             
-            var htmlElement = document.getElementById(id);
-            var func = recipes[id];
+            // For each function in recipes, try to find the corresponding id in the document. If it
+            // exists, execute the function (this will make an SVG drawing in the element with that
+            // id).
             
-            func(htmlElement);
+            var htmlElement = document.getElementById(id);
+            if (htmlElement) {
+                var func = recipes[id];
+                func(htmlElement);
+            }
         }
-        
     }
 }
 

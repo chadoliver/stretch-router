@@ -2,94 +2,79 @@
    v2.0 | 20110126
    License: none (public domain)
 */
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed, 
-figure, figcaption, footer, header, hgroup, 
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
+ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, 
+ acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong,
+ sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, 
+ caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, 
+ footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
     margin: 0;
     padding: 0;
     border: 0;
-	font-size: 100%;
-	font: inherit;
-	vertical-align: baseline;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
 }
-
 /* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure, 
-footer, header, hgroup, menu, nav, section {
-	display: block;
+ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+    display: block;
 }
 
-header,
-footer,
-h1,
-h2,
-h3,
-h4 {
-  color: #000;
-  font-family: "PT Sans", sans-serif;
-  font-weight: 300;
-  letter-spacing: -2px;
-  margin: .3em 0 .1em 0;
+body {
+    background-color: #f2e6bb;
 }
-
+header, footer, h1, h2, h3, h4 {
+    color: #dd4225;
+    font-family:"PT Sans", sans-serif;
+    font-weight: 300;
+    letter-spacing: -2px;
+    margin: .3em 0 .1em 0;
+}
 h1 {
-  font-size: 64px;
+    font-size: 64px;
+    font-weight: 700;
 }
-
 h2 {
-  font-size: 36px;
+    font-size: 36px;
 }
-
+h3 {
+    font-size: 22px;
+    font-style: italic;
+}
 /* LAYOUT STYLES */
+
 /*body {
   font-size: 15px;
   line-height: 1.5; 
   color: #666;
 }*/
-
-article {
-  position: relative;
-  width: 690px;
-  margin: 0 auto 50px auto;
-  line-height: 1.5;
+ article {
+    position: relative;
+    width: 690px;
+    margin: 0 auto 50px auto;
+    line-height: 1.5;
+    color: #202724;
 }
-
 article p {
-    font-family: 'PT Serif', serif;
+    font-family:'PT Serif', serif;
     padding-bottom: 0.5em;
 }
-
 figure {
     margin: 0.5em auto 1em auto;
     padding: 0;
     width: 690px;
 }
-
 figure figcaption {
     line-height: 1;
     margin: 0;
     font-size: 0.8em;
-    font-family: 'PT Serif', serif;
+    font-family:'PT Serif', serif;
     font-style: italic;
 }
-
-figure img,
-figure svg {
+figure img, figure svg {
     max-width: 690px;
     margin: auto 0;
     border-radius: 10px;
 }
-
 figure img {
     max-width: 690px;
     width: auto;
@@ -97,46 +82,39 @@ figure img {
     margin: auto 0;
     border-radius: 10px;
 }
-
 figure svg {
-    background-color: #ddedf7;  /* blue */
+    /*background-color: #ddedf7;*/
+    background-color: #63bd99;
     border: solid 1px #bdcdd7;
 }
-
 svg .obstacles {
-    stroke: black;
-    fill: white;
+    stroke: #dd4225;
+    fill: #dd4225;
     fill-opacity: 1;
-    stroke-opacity: 1;
+    stroke-opacity: 0;
     stroke-width: 1;
     stroke-linecap: round;
 }
-
-svg .innerOrbits,
-svg .outerOrbits{
+svg .innerOrbits, svg .outerOrbits {
     fill: transparent;
     stroke: black;
     stroke-width: 1;
     stroke-linecap: round;
-    stroke-dasharray: 5,5;
+    stroke-dasharray: 5, 5;
 }
-
 svg .innerOrbits {
     stroke-opacity: 0.0;
 }
-
 svg .outerOrbits {
     stroke-opacity: 0.0;
 }
-
 svg .tracks {
     stroke-opacity: 1;
-    stroke: black;
+    stroke: #202724;
     /*stroke-width: 5;*/
     stroke-linecap: round;
     fill: transparent;
 }
-
 svg .labels {
     stroke: black;
     fill: black;

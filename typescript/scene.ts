@@ -58,12 +58,17 @@ module scene {
             labels.setAttribute("class", "labels");
             svg.appendChild(labels);
             
+            var annotations = document.createElementNS("http://www.w3.org/2000/svg", 'g');
+            annotations.setAttribute("class", "annotations");
+            svg.appendChild(annotations);
+            
             this.groups = {
                 obstacles: obstacles,
                 innerOrbits: innerOrbits,
                 outerOrbits: outerOrbits,
                 tracks: tracks,
                 labels: labels,
+                annotations: annotations,
             };
         }
     }

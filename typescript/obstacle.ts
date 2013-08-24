@@ -118,10 +118,11 @@ module obstacle {
                 return label;
             };
 
-            var ringOneRadius = this.radius + c.TRACK_SPACING;
+            var ringOneRadius = this.radius + c.TRACK_SPACING - c.TRACK_WIDTH/2;
 
             var element :Element;
-
+            
+            var dotRadius = 7.5; // = this.radius;
             element = buildCircle(this.x, this.y, this.radius);
             scene.groups.obstacles.appendChild(element);
 

@@ -21,6 +21,6 @@ module constants {
     export var CLOCKWISE = 'CLOCKWISE';
     export var CENTER = 'CENTER';
 
-    export var TRACK_SPACING = 20;
-    export var TRACK_WIDTH = 6;
+    export var TRACK_SPACING = 27.5;
+    export var TRACK_WIDTH = 10;
 };

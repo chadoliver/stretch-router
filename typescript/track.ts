@@ -21,7 +21,7 @@ module track {
         private pathElement: Element;
         private instructions: any[] = [];        // all elements will eventually be converted to strings, but they can be stored in their native type.
         
-        constructor(startObs, width) {
+        constructor(startObs:g.Point, width) {
             
             this.width = width;
             

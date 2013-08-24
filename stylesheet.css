@@ -60,7 +60,7 @@ h2 {
 article {
   position: relative;
   width: 690px;
-  margin: 1em auto;
+  margin: 0 auto 50px auto;
   line-height: 1.5;
 }
 

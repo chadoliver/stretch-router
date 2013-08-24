@@ -36,7 +36,7 @@ module scene {
             var svg :Element = document.createElementNS("http://www.w3.org/2000/svg", 'svg');
             svg.setAttribute("width", config.width.toString());
             svg.setAttribute("height", config.height.toString());
-            config.parent.appendChild(svg);
+            config.parent.insertBefore(svg, config.parent.firstChild);
             
             var obstacles = document.createElementNS("http://www.w3.org/2000/svg", 'g');
             obstacles.setAttribute("class", "obstacles");

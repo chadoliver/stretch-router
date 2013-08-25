@@ -1,19 +1,19 @@
-/// <reference path="./common.ts"/>
-/// <reference path="./stretch.ts"/>
+/// <reference path="./constants.ts"/>
+/// <reference path="./series/tangents.ts"/>
 /// <reference path="./track.ts"/>
 /// <reference path="./obstacle.ts"/>
 /// <reference path="./paintableSet.ts"/>
 /// <reference path="./scene.ts"/>
-/// <reference path="./path.ts"/>
+/// <reference path="./series/path.ts"/>
 
 var SVG_WIDTH = 690;
 
 module examples {
     
-    import g = geometry;
+    import geometry = geometry;
     import c = constants;
     import Scene = scene.Scene;
-    import Stretch = stretch.Stretch;
+    import tangent = tangent;
     import Track = track.Track;
     import Obstacle = obstacle.Obstacle;
     import PaintableSet = paintableSet.PaintableSet;
@@ -162,22 +162,3 @@ module examples {
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        

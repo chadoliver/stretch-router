@@ -25,10 +25,10 @@ module scene {
 
         public groups : {
             obstacles :Element;
-            innerOrbits :Element;
-            outerOrbits :Element;
+            orbits :Element;
             tracks :Element;
             labels :Element;
+            annotations :Element;
         };
 
         constructor (config:SceneConfig) {
@@ -42,13 +42,9 @@ module scene {
             obstacles.setAttribute("class", "obstacles");
             svg.appendChild(obstacles);
             
-            var innerOrbits = document.createElementNS("http://www.w3.org/2000/svg", 'g');
-            innerOrbits.setAttribute("class", "innerOrbits");
-            svg.appendChild(innerOrbits);
-            
-            var outerOrbits = document.createElementNS("http://www.w3.org/2000/svg", 'g');
-            outerOrbits.setAttribute("class", "outerOrbits");
-            svg.appendChild(outerOrbits);
+            var orbits = document.createElementNS("http://www.w3.org/2000/svg", 'g');
+            orbits.setAttribute("class", "orbits");
+            svg.appendChild(orbits);
             
             var tracks = document.createElementNS("http://www.w3.org/2000/svg", 'g');
             tracks.setAttribute("class", "tracks");
@@ -64,8 +60,7 @@ module scene {
             
             this.groups = {
                 obstacles: obstacles,
-                innerOrbits: innerOrbits,
-                outerOrbits: outerOrbits,
+                orbits: orbits,
                 tracks: tracks,
                 labels: labels,
                 annotations: annotations,

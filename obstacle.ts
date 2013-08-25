@@ -1,53 +1,62 @@
-/// <reference path="./common.ts"/>
+/// <reference path="./constants.ts"/>
+/// <reference path="./circle.ts"/>
+/// <reference path="./point.ts"/>
 /// <reference path="./scene.ts"/>
 
 module obstacle {
-
-    import g = geometry;
+    
     import c = constants;
+    import circle = circle;
+    import point = point;
     import Scene = scene.Scene;
+    
+    interface wrapRecord {
+        radius :number;
+        trackWidth :number;
+        minSpacing :number;
+        /*entryAngle :number;
+        exitAngle :number;*/
+    }
 
-    export class Obstacle implements g.Circle {
+    export class Obstacle extends circle.Geometry {
 
-        public x: number;
-        public y: number;
-        public radius: number;
-        
-        public effectiveRadius: number;  // this is the effective radius of the obstacle, after accounting for track spacing.
+        public x :number;
+        public y :number;
+        public radius :number; // The radius of the obstacle itself, as opposed to the  wrap radius.
+        private wrapRecords :wrapRecord[] = [];
 
-        constructor(x:number, y:number, radius:number) {
+        constructor (x:number, y:number, radius:number, trackSpacing:number=c.TRACK_SPACING) {
+            
             this.x = x;
             this.y = y;
             this.radius = radius;
-            this.effectiveRadius = this.radius + c.TRACK_SPACING;
         }
         
-        private fixedModulo(input, modulus) {
-            // This messy equation is required because javascript doesn't give the correct value for 
-            // the modulus of negative angles.
-            return ((input % modulus) + modulus) % modulus; 
+        public registerWrap (record:wrapRecord) {
+            this.wrapRecords.push(record);
         }
-
-        public getDistance(other:g.Point): number {
-
-            var deltaX: number = other.x - this.x;
-            var deltaY: number = other.y - this.y;
-
-            return Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-        }
-
-        public getAngle(other:g.Point): number {
-
-            var deltaX: number = other.x - this.x;
-            var deltaY: number = this.y - other.y;      // remember, y _decreases_ as the point moves up the page.
+        
+        public negotiateWrapRadius (minSpacing:number, trackWidth:number) :number {
             
-            var rawAngle = Math.atan2(deltaX, deltaY);
-            var normalisedAngle = this.fixedModulo(rawAngle, 2*Math.PI);
-
-            return normalisedAngle;      // IMPORTANT: this gives the angle clockwise from north.
+            var outerTrack = {minSpacing: minSpacing, trackWidth: trackWidth};
+            
+            if (this.wrapRecords.length > 0) {
+                
+                var innerTrack = this.wrapRecords[this.wrapRecords.length-1];
+                
+                var innerTrackTotalSpacing = innerTrack.minSpacing + innerTrack.trackWidth/2 + outerTrack.trackWidth/2;
+                var outerTrackTotalSpacing = outerTrack.minSpacing + innerTrack.trackWidth/2 + outerTrack.trackWidth/2;
+                
+                var wrapRadius = this.radius + Math.max(innerTrackTotalSpacing, outerTrackTotalSpacing);
+                return wrapRadius;
+            }
+            else {
+                var wrapRadius = this.radius + outerTrack.minSpacing + outerTrack.trackWidth/2;
+                return wrapRadius;
+            }
         }
-
-        public getPointFromAngle(angle:number, radiusOffset:number): g.Point {
+        
+        public getPointFromAngle(angle:number, wrapRadius:number): i.PointInterface {
             
             //| IMPORTANT: the coordinate systems are:
             //|  - for cartesian points, y _decreases_ as the point moves up the page.
@@ -59,16 +68,15 @@ module obstacle {
             // If you rotate point (px, py) around point (ox, oy) by angle theta you'll get:
             // p'x = cos(theta) * (px-ox) - sin(theta) * (py-oy) + ox
             // p'y = sin(theta) * (px-ox) + cos(theta) * (py-oy) + oy
-            var effectiveRadius = this.radius + radiusOffset;
-            var point: g.Point = {
-                x: this.x + effectiveRadius*Math.sin(angle),
-                y: this.y - effectiveRadius*Math.cos(angle),
+            var point: i.PointInterface = {
+                x: this.x + wrapRadius*Math.sin(angle),
+                y: this.y - wrapRadius*Math.cos(angle),
             };
 
             return point;
         }
 
-        public angularRadiusFrom(other: g.Point, radiusOffset: number): number {
+        public angularRadiusFrom(other:point.Interface, wrapRadius:number): number {
             
             //| This method determines how wide (in radians) the obstacle appears when viewed from other.
             //| Obstacles with a larger radius will return a larger value, and more distant 'other' points
@@ -77,59 +85,25 @@ module obstacle {
             //| this will be the track spacing.
 
             var distance = this.getDistance(other);
-            var linearRadius = this.radius + radiusOffset;
-            var angularRadius = Math.asin(linearRadius / distance);
+            var angularRadius = Math.asin(wrapRadius / distance);
 
             return angularRadius;
         }
-
-        public angularLengthOfArc(startPoint: g.Point, endPoint: g.Point, direction: string): number {
-
-            var startAngle = this.getAngle(startPoint);
-            var endAngle = this.getAngle(endPoint);
-            var angularDistance;
-
-            if (direction === c.CLOCKWISE) {
-                angularDistance = endAngle - startAngle;
-            }
-            else {
-                angularDistance = startAngle - endAngle;
-            }
-            
-            return this.fixedModulo(angularDistance, 2*Math.PI);
-        }
         
-        public paint(scene:Scene) {
+        public paint (scene:Scene) {
 
             // config must have x, y, and radius properties.
 
-            var buildCircle = function (x: number, y: number, radius: number) :Element {
+            super.paint(scene, 'obstacle') // paint the core
+            
+            for (var i=0; i<this.wrapRecords.length; i++) {
                 
-                var circle :Element = document.createElementNS("http://www.w3.org/2000/svg", 'circle');
-                circle.setAttribute("cx", x.toString());
-                circle.setAttribute("cy", y.toString());
-                circle.setAttribute("r", radius.toString());
-                return circle;
-            };
-            
-            var buildLabel = function (x: number, y: number, text: string) :Element {
-
-                var label :Element = document.createElementNS("http://www.w3.org/2000/svg", 'text');
-                label.setAttribute("x", x.toString());
-                label.setAttribute("y", y.toString());
-                label.textContent = text;
-                return label;
-            };
-
-            var ringOneRadius = this.effectiveRadius - c.TRACK_WIDTH/2;
-
-            var element :Element;
-            
-            element = buildCircle(this.x, this.y, this.radius);
-            scene.groups.obstacles.appendChild(element);
-
-            element = buildCircle(this.x, this.y, ringOneRadius);
-            scene.groups.innerOrbits.appendChild(element);
+                var wrap = this.wrapRecords[i];
+                var innerEdge = wrap.radius - wrap.trackWidth/2 -1;
+                
+                var orbit = new circle.SVG(this.x, this.y, innerEdge);
+                orbit.paint(scene, 'orbit');
+            }
         }
     }
 }

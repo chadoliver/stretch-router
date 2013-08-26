@@ -1,23 +1,24 @@
 /// <reference path="./constants.ts"/>
-/// <reference path="./series/tangents.ts"/>
 /// <reference path="./track.ts"/>
 /// <reference path="./obstacle.ts"/>
 /// <reference path="./paintableSet.ts"/>
 /// <reference path="./scene.ts"/>
+/// <reference path="./series/tangent.ts"/>
 /// <reference path="./series/path.ts"/>
+/// <reference path="./series/circle.ts"/>
 
 var SVG_WIDTH = 690;
 
 module examples {
-    
-    import geometry = geometry;
+
     import c = constants;
-    import Scene = scene.Scene;
-    import tangent = tangent;
-    import Track = track.Track;
-    import Obstacle = obstacle.Obstacle;
     import PaintableSet = paintableSet.PaintableSet;
-    import Path = path.Path;
+    import Scene = scene.Scene;
+    import Obstacle = obstacle.Obstacle;
+    import Track = track.Track;
+    import Tangent = tangent;
+    import Path = path;
+    import Circle = circle;
     
     /*
     var topObstacle = new Obstacle(245, 105, 75, "topObstacle");
@@ -109,38 +110,64 @@ module examples {
             
             var SVG_HEIGHT = 350;
             
+            // Set up the scene
             var scene = new Scene({
                 parent: element,
                 width: SVG_WIDTH,
                 height: SVG_HEIGHT,
             });
             
+            // Add two obstacles to the scene
             var halfHeight = SVG_HEIGHT / 2
             var obs = PaintableSet({
                 left : new Obstacle(halfHeight+10, 175, 30),
                 right : new Obstacle(SVG_WIDTH-halfHeight-70, 175, 50),
+                start: new Obstacle(-100, 175, 10),                         // start and end are just aids to help construct the track.
+                end: new Obstacle(SVG_WIDTH+100, 175, 10),
             });
+            
+            
+            // Create an orbit representing the summed wrap radii of both obstacles. Assume 20px spacing, 10px width for track.
+            var leftWrapRadius = obs.left.negotiateWrapRadius(20, 10);
+            var rightWrapRadius = obs.right.negotiateWrapRadius(20, 10);
+            var summedRadius = new Circle.Geometry(
+                obs.right.x, 
+                obs.right.y, 
+                leftWrapRadius + rightWrapRadius
+            );
+            
+            // create and register an anticlockwise to clockwise stretch.
+            var track = new Track(obs.start, 10);
+            track.anticlockwise(obs.left);
+            track.clockwise(obs.right);
+            track.center(obs.end);
+            
+            
+            // Create a right angle triangle, connecting the centers of both obstacles and a point on summedRadius.
+            // The line between the obstacles is the hypotenuse.
+            var tangent = new Tangent.Geometry({
+                start: {
+                    circle: obs.left,
+                    direction: c.CENTER,
+                    radius: summedRadius.radius,
+                },
+                end: {
+                    circle: summedRadius, 
+                    direction: c.CLOCKWISE,
+                    radius: summedRadius.radius,
+                }
+            });
+            var rightAngleTriangle = new Path.SVG(obs.left, 2);
+            rightAngleTriangle.lineTo(tangent.end);
+            rightAngleTriangle.lineTo(obs.right);
+            rightAngleTriangle.lineTo(obs.left);
+            
+            
+            // paint everything to the screen.
             obs.paint(scene);
-    
-            var buildCircle = function (x: number, y: number, radius: number) :Element {
-                
-                var circle :Element = document.createElementNS("http://www.w3.org/2000/svg", 'circle');
-                circle.setAttribute("cx", x.toString());
-                circle.setAttribute("cy", y.toString());
-                circle.setAttribute("r", radius.toString());
-                return circle;
-            };
-
-            var element = buildCircle(obs.right.x, obs.right.y, obs.right.effectiveRadius + obs.left.effectiveRadius);
-            scene.groups.innerOrbits.appendChild(element);
-            
-            
-            var path = new Path(obs.left, 2);
-            var stretch = new Stretch(obs.left, c.CENTER, obs.right, c.CLOCKWISE);
-            path.lineTo(stretch.end);
-            path.lineTo(obs.right);
-            path.lineTo(obs.left);
-            path.paint(scene, 'annotations');
+            summedRadius.paint(scene, 'orbits');
+            rightAngleTriangle.paint(scene, scene.ANNOTATIONS);
+            track.paint(scene);
             
         },
         

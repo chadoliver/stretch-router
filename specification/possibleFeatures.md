@@ -118,6 +118,11 @@ A _trigger line_ is an imaginary line which, if crossed with the mouse, will cau
 - Perhaps it would be possible to simplify shapes when zoomed out? E.g. remove rounded corners, and join tracks together if they form a 'significant' bus.
 
 
+### Miscellaneous
+
+- A method to ensure that updating a SVG-backed object will adjust the SVG element, not replicate it.
+
+
 
 
 

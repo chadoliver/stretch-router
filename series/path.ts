@@ -1,42 +1,41 @@
-/// <reference path="./common.ts"/>
-/// <reference path="./scene.ts"/>
+/// <reference path="../constants.ts"/>
+/// <reference path="../scene.ts"/>
 /// <reference path="./point.ts"/>
 
 module path {
     
     import c = constants;
     import Scene = scene.Scene;
-    import point = point;
-    import circle = circle;
-
+    import Point = point;
+    import Circle = circle;
     
     export class SVG {
         
         public width :number;
         
-        private currentEndPoint: point.Interface;
-        private pathElement: Element;
-        private instructions: any[] = [];        // all elements will eventually be converted to strings, but they can be stored in their native type.
+        private currentEndPoint :Point.Interface;
+        private pathElement :Element;
+        private instructions :any[] = [];        // all elements will eventually be converted to strings, but they can be stored in their native type.
         
-        constructor(start:point.Interface, width) {
+        constructor(start:Point.Interface, width:number) {
             
             this.width = width;            
             this.pathElement = document.createElementNS("http://www.w3.org/2000/svg", 'path');
             this.moveTo(start);
         }
         
-        public moveTo(dest:point.Interface) {
+        public moveTo(dest:Point.Interface) {
             this.instructions.push("M", dest.x, dest.y);
             this.currentEndPoint = dest;
         }
         
-        public lineTo(dest:point.Interface) {
+        public lineTo(dest:Point.Interface) {
             
             this.instructions.push("L ", dest.x, dest.y);
             this.currentEndPoint = dest;
         }
         
-        public arcTo(pivot:circle.Geometry, wrapRadius:number, dest:point.Interface, wrapMode:string) {
+        public arcTo(pivot:Circle.Geometry, wrapRadius:number, dest:Point.Interface, wrapMode:string) {
         
             // A rx ry x-axis-rotation large-arc-flag sweep-flag x y
             

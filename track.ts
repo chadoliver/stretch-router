@@ -1,36 +1,39 @@
-/// <reference path="./common.ts"/>
-/// <reference path="./tangent.ts"/>
+/// <reference path="./constants.ts"/>
 /// <reference path="./scene.ts"/>
 /// <reference path="./obstacle.ts"/>
-/// <reference path="./svg.ts"/>
+/// <reference path="./series/tangent.ts"/>
+/// <reference path="./series/path.ts"/>
+/// <reference path="./series/point.ts"/>
 
 module track {
 
-    import i = interfaces;
     import c = constants;
-    import tangent = tangent;
     import Scene = scene.Scene;
     import Obstacle = obstacle.Obstacle;
-    import PathSVG = svg.PathSVG;
+    import Tangent = tangent;
+    import Path = path;
+    import Point = point;
+    
 
     export class Track {
         
         public width :number;
         public trackSpacing :number;
         
-        private currentObs;
-        private currentWrapMode;
-        private currentLineEndPoint :i.PointInterface;
-        private path :PathSVG;
+        private currentObs :Obstacle;
+        private currentWrapMode :string;
+        private currentWrapRadius :number;
+        private currentLineEndPoint :Point.Interface;
+        private path :path.SVG;
         
-        constructor(startObs:i.PointInterface, width:number, trackSpacing:number=c.TRACK_SPACING) {
+        constructor(startObs:Obstacle, width:number, trackSpacing:number=c.TRACK_SPACING) {
             
             this.width = width;
             this.trackSpacing = trackSpacing;
             this.currentObs = startObs;
             this.currentWrapMode = c.CENTER;
-            this.currentWrapRadius = startObs.negotiateWrapRadius(trackSpacing, width);
-            this.path = new PathSVG(startObs, width);
+            this.currentWrapRadius = startObs.negotiateWrapRadius(this.trackSpacing, this.width);
+            this.path = new Path.SVG(startObs, width);
         }
         
         private nextSegment(nextObs:Obstacle, direction:string) {
@@ -39,14 +42,14 @@ module track {
             
             var nextWrapRadius = nextObs.negotiateWrapRadius(this.trackSpacing, this.width);
 
-            var tangent = new Stretch({
+            var tangent = new Tangent.Geometry({
                 start: {
-                    obstacle: self.currentObs,
+                    circle: self.currentObs,
                     direction: self.currentWrapMode,
                     radius: self.currentWrapRadius,
                 },
                 end: {
-                    obstacle: nextObs,
+                    circle: nextObs,
                     direction: direction,
                     radius: nextWrapRadius,
                 }
@@ -55,6 +58,7 @@ module track {
             this.path.arcTo(this.currentObs, this.currentWrapRadius, tangent.start, this.currentWrapMode);
             this.path.lineTo(tangent.end);
             
+            // TODO: this doesn't handle CENTERs properly.
             nextObs.registerWrap({
                 radius: nextWrapRadius,
                 trackWidth: self.width,
@@ -82,7 +86,7 @@ module track {
         }
         
         public paint(scene:Scene) {
-            this.path.paint(scene, 'tracks');
+            this.path.paint(scene, scene.TRACKS);
             return this;
         }
     };

@@ -1,18 +1,7 @@
-/// <reference path="./common.ts"/>
-
-/*
-<svg id="context" width="688" height="350">
-    <g id="obstacles"></g>
-    <g id="innerOrbits"></g>
-    <g id="outerOrbits"></g>
-    <g id="tracks"></g>
-    <g id="labels"></g>
-</svg>
-*/
+/// <reference path="./constants.ts"/>
 
 module scene {
 
-    import g = geometry;
     import c = constants;
     
     export interface SceneConfig {
@@ -22,6 +11,12 @@ module scene {
     }
 
     export class Scene {
+        
+        public OBSTACLES = 'obstacles';
+        public ORBITS = 'orbits';
+        public TRACKS = 'tracks';
+        public LABELS = 'labels';
+        public ANNOTATIONS = 'annotations';
 
         public groups : {
             obstacles :Element;

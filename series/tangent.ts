@@ -1,27 +1,28 @@
-/// <reference path="./common.ts"/>
-/// <reference path="./scene.ts"/>
+/// <reference path="../constants.ts"/>
+/// <reference path="../scene.ts"/>
+/// <reference path="./circle.ts"/>
 /// <reference path="./point.ts"/>
-/// <reference path="./obstacle.ts"/>
 
 module tangent {
     
     import c = constants;
     import Scene = scene.Scene;
-    import point = point;
+    import Circle = circle;
+    import Point = point;
     
     export interface Interface {
-        start :PointInterface;
-        end :PointInterface;
+        start :Point.Interface;
+        end :Point.Interface;
     }
     
     export interface Configuration {
         start :{
-            obstacle :Obstacle;
+            circle :Circle.Geometry;
             direction :string;
             radius :number;
         };
         end :{
-            obstacle :Obstacle;
+            circle :Circle.Geometry;
             direction :string;
             radius :number;
         }
@@ -34,34 +35,34 @@ module tangent {
             CENTER: function (config:Configuration): Interface {
 
                 return {
-                    start: config.start.obstacle,
-                    end: config.end.obstacle,
+                    start: config.start.circle,
+                    end: config.end.circle,
                 };
             },
 
             CLOCKWISE: function (config:Configuration): Interface {
                 
-                var angleBetweenCenters = config.start.obstacle.getAngle(config.end.obstacle);
-                var angularRadius = config.end.obstacle.angularRadiusFrom(config.start.obstacle, config.end.radius);
+                var angleBetweenCenters = config.start.circle.getAngle(config.end.circle);
+                var angularRadius = config.end.circle.angularRadiusFrom(config.start.circle, config.end.radius);
 
                 var angleOfEnd = angleBetweenCenters - angularRadius - Math.PI / 2;
                 
                 return {
-                    start: config.start.obstacle,
-                    end: config.end.obstacle.getPointFromAngle(angleOfEnd, config.end.radius),
+                    start: config.start.circle,
+                    end: config.end.circle.getPointFromAngle(angleOfEnd, config.end.radius),
                 };
             },
 
             ANTI_CLOCKWISE: function (config:Configuration): Interface {
                 
-                var angleBetweenCenters = config.start.obstacle.getAngle(config.end.obstacle);
-                var angularRadius = config.end.obstacle.angularRadiusFrom(config.start.obstacle, config.end.radius);
+                var angleBetweenCenters = config.start.circle.getAngle(config.end.circle);
+                var angularRadius = config.end.circle.angularRadiusFrom(config.start.circle, config.end.radius);
 
                 var angleOfEnd = angleBetweenCenters + angularRadius + Math.PI / 2;       // perhaps this should be 3*Math.PI/2 ?
                 
                 return {
-                    start: config.start.obstacle,
-                    end: config.end.obstacle.getPointFromAngle(angleOfEnd, config.end.radius),
+                    start: config.start.circle,
+                    end: config.end.circle.getPointFromAngle(angleOfEnd, config.end.radius),
                 };
             },
         },
@@ -70,21 +71,21 @@ module tangent {
 
             CENTER: function (config:Configuration): Interface {
                 
-                var angleBetweenCenters = config.start.obstacle.getAngle(config.end.obstacle);
-                var angularRadius = config.start.obstacle.angularRadiusFrom(config.end.obstacle, config.start.radius);
+                var angleBetweenCenters = config.start.circle.getAngle(config.end.circle);
+                var angularRadius = config.start.circle.angularRadiusFrom(config.end.circle, config.start.radius);
 
                 var angleOfStart = angleBetweenCenters + angularRadius - Math.PI / 2;
 
                 return {
-                    start: config.start.obstacle.getPointFromAngle(angleOfStart, config.start.radius),
-                    end: config.end.obstacle,
+                    start: config.start.circle.getPointFromAngle(angleOfStart, config.start.radius),
+                    end: config.end.circle,
                 };
             },
 
             CLOCKWISE: function (config:Configuration): Interface {
                 
-                var angleBetweenCenters = config.start.obstacle.getAngle(config.end.obstacle);
-                var distance = config.start.obstacle.getDistance(config.end.obstacle);
+                var angleBetweenCenters = config.start.circle.getAngle(config.end.circle);
+                var distance = config.start.circle.getDistance(config.end.circle);
 
                 var radiusDifference = config.end.radius - config.start.radius;
                 var angularRadius = Math.asin(radiusDifference / distance);
@@ -93,15 +94,15 @@ module tangent {
                 var angleOfStart = angleOfEnd;
                 
                 return {
-                    start: config.start.obstacle.getPointFromAngle(angleOfStart, config.start.radius),
-                    end: config.end.obstacle.getPointFromAngle(angleOfEnd, config.end.radius),
+                    start: config.start.circle.getPointFromAngle(angleOfStart, config.start.radius),
+                    end: config.end.circle.getPointFromAngle(angleOfEnd, config.end.radius),
                 };
             },
 
             ANTI_CLOCKWISE: function (config:Configuration): Interface {
                 
-                var angleBetweenCenters = config.start.obstacle.getAngle(config.end.obstacle);
-                var distance = config.start.obstacle.getDistance(config.end.obstacle);
+                var angleBetweenCenters = config.start.circle.getAngle(config.end.circle);
+                var distance = config.start.circle.getDistance(config.end.circle);
                 
                 var radiusSum = config.start.radius + config.end.radius;
                 var angularRadius = Math.asin(radiusSum / distance);
@@ -110,8 +111,8 @@ module tangent {
                 var angleOfEnd = angleBetweenCenters + angularRadius + Math.PI / 2;
                 
                 return {
-                    start: config.start.obstacle.getPointFromAngle(angleOfStart, config.start.radius),
-                    end: config.end.obstacle.getPointFromAngle(angleOfEnd, config.end.radius),
+                    start: config.start.circle.getPointFromAngle(angleOfStart, config.start.radius),
+                    end: config.end.circle.getPointFromAngle(angleOfEnd, config.end.radius),
                 };
             }
         },
@@ -120,21 +121,21 @@ module tangent {
 
             CENTER: function (config:Configuration): Interface {
                 
-                var angleBetweenCenters = config.start.obstacle.getAngle(config.end.obstacle);
-                var angularRadius = config.start.obstacle.angularRadiusFrom(config.end.obstacle, config.start.radius);
+                var angleBetweenCenters = config.start.circle.getAngle(config.end.circle);
+                var angularRadius = config.start.circle.angularRadiusFrom(config.end.circle, config.start.radius);
 
                 var angleOfStart = angleBetweenCenters - angularRadius + Math.PI / 2;           // perhaps this should be 3*Math.PI/2 ?
 
                 return {
-                    start: config.start.obstacle.getPointFromAngle(angleOfStart, config.start.radius),
-                    end: config.end.obstacle,
+                    start: config.start.circle.getPointFromAngle(angleOfStart, config.start.radius),
+                    end: config.end.circle,
                 };
             },
 
             CLOCKWISE: function (config:Configuration): Interface {
 
-                var angleBetweenCenters = config.start.obstacle.getAngle(config.end.obstacle);
-                var distance = config.start.obstacle.getDistance(config.end.obstacle);
+                var angleBetweenCenters = config.start.circle.getAngle(config.end.circle);
+                var distance = config.start.circle.getDistance(config.end.circle);
 
                 var radiusSum = config.start.radius + config.end.radius;
                 var angularRadius = Math.asin(radiusSum / distance);
@@ -143,15 +144,15 @@ module tangent {
                 var angleOfEnd = angleBetweenCenters - angularRadius - Math.PI / 2;
 
                 return {
-                    start: config.start.obstacle.getPointFromAngle(angleOfStart, config.start.radius),
-                    end: config.end.obstacle.getPointFromAngle(angleOfEnd, config.end.radiusG),
+                    start: config.start.circle.getPointFromAngle(angleOfStart, config.start.radius),
+                    end: config.end.circle.getPointFromAngle(angleOfEnd, config.end.radius),
                 };
             },
 
             ANTI_CLOCKWISE: function (config:Configuration): Interface {
 
-                var angleBetweenCenters = config.start.obstacle.getAngle(config.end.obstacle);
-                var distance = config.start.obstacle.getDistance(config.end.obstacle);
+                var angleBetweenCenters = config.start.circle.getAngle(config.end.circle);
+                var distance = config.start.circle.getDistance(config.end.circle);
 
                 var radiusDifference = config.end.radius - config.start.radius;
                 var angularRadius = Math.asin(radiusDifference / distance);
@@ -160,8 +161,8 @@ module tangent {
                 var angleOfEnd = angleOfStart;
 
                 return {
-                    start: config.start.obstacle.getPointFromAngle(angleOfStart, config.start.radius),
-                    end: config.end.obstacle.getPointFromAngle(angleOfEnd, config.end.radius)
+                    start: config.start.circle.getPointFromAngle(angleOfStart, config.start.radius),
+                    end: config.end.circle.getPointFromAngle(angleOfEnd, config.end.radius)
                 };
             }
         }
@@ -169,8 +170,8 @@ module tangent {
 
     export class Geometry implements Interface {
 
-        public start :point.Interface;
-        public end :point.Interface;
+        public start :Point.Interface;
+        public end :Point.Interface;
 
         constructor(config:Configuration) {
                 

@@ -6,5 +6,4 @@ module constants {
 
     export var TRACK_SPACING = 27.5;
     export var TRACK_WIDTH = 10;
-    
 }

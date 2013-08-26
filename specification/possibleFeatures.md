@@ -16,7 +16,7 @@ A _trigger line_ is an imaginary line which, if crossed with the mouse, will cau
 
 
 
-### Routing Tracks
+### Routing The Tracks
 
 - A method for determining the stretch and wrap when a line is routed around two obstacles, for given wrap radii and wrap directions.
 - A method to calculate trigger lines, and determine when the mouse crosses one.
@@ -24,18 +24,50 @@ A _trigger line_ is an imaginary line which, if crossed with the mouse, will cau
 - A method to recalculate wraps when a component is moved.
 - A method to calculate the cascading impact of a particular change, such as routing a track inside a pre-existing wrap.
 - A method to negotiate wrap order and radius, with an obvious focus on avoiding 'impossible' wraps.
-- A method to enforce minimum curve radii, perhaps with the ability to specify minimum curve radii on a per-track basis.
 - Joining tracks: what is the UX? What is the form of a join? Can we afford to have curved joins, considering that they will require polygons and not just paths?
 - A method for determining which critical cuts are impassable.
 - More generally, a method for determining keep-out regions, including those around obstacles from a different net.
 - What happens when the user moves their mouse over a keep-out region?
 - What is the UX for beginning/pausing/completing a route?
 - A method for pushing tracks aside. This will probably involve creating a 'virtual' obstacle at the head of the active track.
+- A method for segmenting tracks (e.g. as a consequence of creating a three-way intersection), and relating segments together.
+- A method for selecting and routing a set of tracks, as a bus.
+
+### Moving Elements
+
+- A method for associating elements of a component together so that they can be efficiently moved.
+- A method for 'sliding' components, and determining how far they can move. The UX for such.
+- A method for lifting components 'up and over'. 
+- A method for 'pushing' tracks onto the other side of an obstacle.
+- A method to select a set of elements, and operate on them as a group.
+
+### Airwires and Nets
+
+- A method of determining what points are connected with airwires. This will probably be some form of minimum spanning tree.
+- A method of curving airwires to avoid ambiguous paths.
+- A method of highlighting all elements on a net.
 
 ### Compound Obstacles
 
 - A logical MVC structure
 - A method for wrapping tracks around compound obstacles.
+
+### Multi-layer Boards
+
+- How does the user specify a layer to work on? 
+- How does the user insert vias? How can the user specify whether the via should be fixed or movable?
+- What heuristics can be used to determine the position of a movable via? Least squares?
+
+### Editor Interface
+
+- How do we support touch devices? Desktop with mouse only? Power user with mouse and keyboard?
+- Is there a toolbox? What tools should be provided, aside from route, rip-up, move, rotate, and select?
+- Should there be a 'properties' modal associated with each element? What should be in it?
+- What is the interface for various move operations (slide, up and over) and for route/ripup operations?
+- Would donut menus be useful?
+- What is the interface for zooming and panning? How does it work on a touch device? How do we distinguish between moving a component and moving the viewport?
+- Possibly: have an option to do AoE-style panning?
+- Should there be some way to work with multiple boards? E.g. tabbed interface.
 
 ### Schematic Description Language
 
@@ -68,7 +100,22 @@ A _trigger line_ is an imaginary line which, if crossed with the mouse, will cau
 - Organisations, with user management.
 - Shared projects (no single person owns it). Principle use case: assignments.
 
+### Advanced features
 
+- An autorouter, or at least one that will auto-complete the current track.
+- Grey out paths which cannot be taken (e.g. if there's an impassable cut).
+- Draw tracks in rectilinear form, while still being able to push them aside etc.
+- If a pad has straight edges, tracks should leave at right angles to the edge.
+- A method to enforce minimum curve radii, perhaps with the ability to specify minimum curve radii on a per-track basis.
+- Optimise for minimum (least squares?) curve radii on a set of tracks.
+- The ability to set properties and goals for each track, and see how each track performs. These properties and goals could also be used for autorouting. Perhaps an interface which displays which areas and tracks are likely to cause problems.
+
+### Performance Optimisations
+
+- Put as much code as possible into web workers, and have a lightweight UI thread.
+- Allocate and recycle a pool of static objects. There would need to be different pools for different classes of objects.
+- Minimise the number of SVG object in the DOM. Perhaps a tile-based renderer? It would be vital to quantify the performance improvement, if any.
+- Perhaps it would be possible to simplify shapes when zoomed out? E.g. remove rounded corners, and join tracks together if they form a 'significant' bus.
 
 
 

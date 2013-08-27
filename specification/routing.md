@@ -2,41 +2,47 @@
 
 I've solved this problem. Here's the function used to calculate the endpoints of a clockwise-to-anticlockwise stretch:
 
-    function (config:Configuration): Interface {
-        
-        var angleBetweenCenters = config.start.circle.getAngle(config.end.circle);
-        var distance = config.start.circle.getDistance(config.end.circle);
-        
-        var radiusSum = config.start.radius + config.end.radius;
-        var angularRadius = Math.asin(radiusSum / distance);
-        
-        var angleOfStart = angleBetweenCenters + angularRadius - Math.PI / 2;
-        var angleOfEnd = angleBetweenCenters + angularRadius + Math.PI / 2;
-        
-        return {
-            start: config.start.circle.getPointFromAngle(angleOfStart, config.start.radius),
-            end: config.end.circle.getPointFromAngle(angleOfEnd, config.end.radius),
-        };
-    }
+```javascript
+function (config:Configuration): Interface {
+    
+    var angleBetweenCenters = config.start.circle.getAngle(config.end.circle);
+    var distance = config.start.circle.getDistance(config.end.circle);
+    
+    var radiusSum = config.start.radius + config.end.radius;
+    var angularRadius = Math.asin(radiusSum / distance);
+    
+    var angleOfStart = angleBetweenCenters + angularRadius - Math.PI / 2;
+    var angleOfEnd = angleBetweenCenters + angularRadius + Math.PI / 2;
+    
+    return {
+        start: config.start.circle.getPointFromAngle(angleOfStart, config.start.radius),
+        end: config.end.circle.getPointFromAngle(angleOfEnd, config.end.radius),
+    };
+}
+```
 
 And here's the signature of the configuration object passed into the function:
 
-    interface Configuration {
-        start :{
-            circle :Circle.Geometry;
-            direction :string;
-            radius :number;
-        };
-        end :{
-            circle :Circle.Geometry;
-            direction :string;
-            radius :number;
-        }
+```javascript
+interface Configuration {
+    start :{
+        circle :Circle.Geometry;
+        direction :string;
+        radius :number;
+    };
+    end :{
+        circle :Circle.Geometry;
+        direction :string;
+        radius :number;
     }
+}
+```
 
 Each circle can be wrapped in three different ways: clockwise, anticlockwise, and to the center. With two circles per stretch, this gives nine different functions for calculating the stretch endpoints. These are stored in a two-level object literal, and selected using the following code:
 
-    var wrapAlgorithm = algorithms[config.start.direction][config.end.direction];
+```javascript
+var wrapAlgorithm = algorithms[config.start.direction][config.end.direction];
+```
 
 The config object is the same as described above, which is passed into the chosen function.
 

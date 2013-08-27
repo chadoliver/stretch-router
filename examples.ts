@@ -157,16 +157,18 @@ module examples {
                     radius: summedRadius.radius,
                 }
             });
-            var rightAngleTriangle = new Path.SVG(obs.left, 2);
-            rightAngleTriangle.lineTo(tangent.end);
-            rightAngleTriangle.lineTo(obs.right);
-            rightAngleTriangle.lineTo(obs.left);
+            var annotation = new Path.SVG(obs.left, 2);
+            annotation.lineTo(tangent.end);
+            annotation.lineTo(obs.right);
+            annotation.lineTo(obs.left);
+            //annotation.lineTo(tangent.start);
+            //annotation.lineTo(tangent.end);
             
             
             // paint everything to the screen.
             obs.paint(scene);
             summedRadius.paint(scene, 'orbits');
-            rightAngleTriangle.paint(scene, scene.ANNOTATIONS);
+            annotation.paint(scene, scene.ANNOTATIONS);
             track.paint(scene);
             
         },

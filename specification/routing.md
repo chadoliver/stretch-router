@@ -1,4 +1,4 @@
-#### "How do we determine the stretch when a track is routed around two obstacles, for given wrap radii and wrap directions?"
+#### How do we determine the stretch when a track is routed around two obstacles, for given wrap radii and wrap directions?
 
 I've solved this problem. Here's the function used to calculate the endpoints of a clockwise-to-anticlockwise stretch:
 ```javascript

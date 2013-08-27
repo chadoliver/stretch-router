@@ -72,11 +72,11 @@ A valid wrap order is one which resembles a stack: tracks can only be pushed ont
 
 Wrap radius is very simple: simply sum the track width and spacing for all inner wraps. There are a few extra details, but these are so simple that they don't need to be described.
 
-Todo: explain how to detect and account for cascading wraps (an inner wrap increases an outer track's wrap radius to increase, and thus introduces a wrap into an adjacent stretch of the track). How do we efficiently determine when cascade is completed and will not produce any more wraps? 
+Todo: explain how to detect and account for cascading wraps (an inner wrap increases an outer track's wrap radius to increase, and thus introduces a wrap into an adjacent stretch of the track). How do we efficiently determine when a cascade is completed and will not produce any more wraps? 
 
 
 ----------------------------------------------------------------------------------------------------
-#### When a user undos the most recent wrap, how do we determine the length and position of the exposed stretch?
+#### When a user presses undo after routing a track, how much is undone? If it is undone one stretch+wrap at a time, how do we determine the length and position of the hanging stretch?
 
 ----------------------------------------------------------------------------------------------------
 #### Joining tracks: what is the UX? What is the form of a join? Can we afford to have curved joins, considering that they will require polygons and not just paths?"
@@ -103,21 +103,21 @@ Todo: explain how to detect and account for cascading wraps (an inner wrap incre
 
 
 ----------------------------------------------------------------------------------------------------
-### How do we allow the user to push other tracks aside when routing a track?
+#### How do we allow the user to push other tracks aside when routing a track?
 
 This will probably involve creating a 'virtual' obstacle at the head of the active track.
 
 
 ----------------------------------------------------------------------------------------------------
-### How do we allow the user to make small changes to a track's route, such as moving it to the other side of an obstacle? How does this work when operating on multiple tracks at once?
+#### How do we allow the user to make small changes to a track's route, such as moving it to the other side of an obstacle? How does this work when operating on multiple tracks at once?
 
 
 ----------------------------------------------------------------------------------------------------
-#### How do we deal with nets which have multiple intersecting tracks? D
+#### How do we deal with nets which have multiple intersecting tracks?
 
 
 ----------------------------------------------------------------------------------------------------
-### How do we implement auto-complete? How can we make the results predictable?
+#### How do we implement auto-complete? How can we make the results predictable?
 
 
 

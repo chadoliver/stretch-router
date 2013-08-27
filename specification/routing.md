@@ -1,7 +1,6 @@
-##### "A method for determining the stretch and wrap when a line is routed around two obstacles, for given wrap radii and wrap directions."
+#### "A method for determining the stretch and wrap when a line is routed around two obstacles, for given wrap radii and wrap directions."
 
 I've solved this problem. Here's the function used to calculate the endpoints of a clockwise-to-anticlockwise stretch:
-
 ```javascript
 function (config:Configuration): Interface {
     
@@ -22,7 +21,6 @@ function (config:Configuration): Interface {
 ```
 
 And here's the signature of the configuration object passed into the function:
-
 ```javascript
 interface Configuration {
     start :{
@@ -47,56 +45,56 @@ var wrapAlgorithm = algorithms[config.start.direction][config.end.direction];
 The config object is the same as described above, which is passed into the chosen function.
 
 
-
-##### "A method to calculate trigger lines, and determine when the mouse crosses one."
-
-
-
-##### "Hanging tracks: when a user undos the most recent wrap, the exposed stretch should be shortened to an appropriate length, and perhaps rotated so that it doesn't affect other tracks"
+----------------------------------------------------------------------------------------------------
+#### "A method to calculate trigger lines, and determine when the mouse crosses one."
 
 
-
-##### "A method to recalculate wraps when a component is moved."
-
-
-
-##### "A method to calculate the cascading impact of a particular change, such as routing a track inside a pre-existing wrap."
+----------------------------------------------------------------------------------------------------
+#### "Hanging tracks: when a user undos the most recent wrap, the exposed stretch should be shortened to an appropriate length, and perhaps rotated so that it doesn't affect other tracks"
 
 
-
-##### "A method to negotiate wrap order and radius, with an obvious focus on avoiding 'impossible' wraps."
-
-
-
-##### "Joining tracks: what is the UX? What is the form of a join? Can we afford to have curved joins, considering that they will require polygons and not just paths?"
+----------------------------------------------------------------------------------------------------
+#### "A method to recalculate wraps when a component is moved."
 
 
-
-##### "A method for determining which critical cuts are impassable."
-
-
-
-##### "More generally, a method for determining keep-out regions, including those around obstacles from a different net."
+----------------------------------------------------------------------------------------------------
+#### "A method to calculate the cascading impact of a particular change, such as routing a track inside a pre-existing wrap."
 
 
-
-##### "What happens when the user moves their mouse over a keep-out region?"
-
-
-
-##### "What is the UX for beginning/pausing/completing a route?"
+----------------------------------------------------------------------------------------------------
+#### "A method to negotiate wrap order and radius, with an obvious focus on avoiding 'impossible' wraps."
 
 
-
-##### "A method for pushing tracks aside. This will probably involve creating a 'virtual' obstacle at the head of the active track."
-
-
-
-##### "A method for segmenting tracks (e.g. as a consequence of creating a three-way intersection), and relating segments together."
+----------------------------------------------------------------------------------------------------
+#### "Joining tracks: what is the UX? What is the form of a join? Can we afford to have curved joins, considering that they will require polygons and not just paths?"
 
 
+----------------------------------------------------------------------------------------------------
+#### "A method for determining which critical cuts are impassable."
 
-##### "A method for selecting and routing a set of tracks, as a bus."
+
+----------------------------------------------------------------------------------------------------
+#### "More generally, a method for determining keep-out regions, including those around obstacles from a different net."
+
+
+----------------------------------------------------------------------------------------------------
+#### "What happens when the user moves their mouse over a keep-out region?"
+
+
+----------------------------------------------------------------------------------------------------
+#### "What is the UX for beginning/pausing/completing a route?"
+
+
+----------------------------------------------------------------------------------------------------
+#### "A method for pushing tracks aside. This will probably involve creating a 'virtual' obstacle at the head of the active track."
+
+
+----------------------------------------------------------------------------------------------------
+#### "A method for segmenting tracks (e.g. as a consequence of creating a three-way intersection), and relating segments together."
+
+
+----------------------------------------------------------------------------------------------------
+#### "A method for selecting and routing a set of tracks, as a bus."
 
 
 

@@ -48,13 +48,31 @@ The config object is the same as described above, which is passed into the chose
 ----------------------------------------------------------------------------------------------------
 #### How do we determine when a track needs to wrap around an obstacle?
 
+First, we need the concept of an ```active obstacle```. When routing a track, the active obstacle is the last obstacle which the track is wrapped around. Initially the active obstacle is just the obstacle which the track starts from, but each time the track wraps around an obstacle that obstacle becomes the active one.
+
+A new wrap will be made as soon as the last segment of the track intersects an obstacle. This is easiest to see if one considers a track which passes through the center of the active obstacle; the last segment is then just a straight line from the center of the active obstacle to the mouse position. 
+
+How is this implemented in practice?
+
+The basic idea is to convert everything to polar coordinates centered on the active obstacle. An obstacle's shadow can be simplified to a simple rectangle on the polar graph, and a wrap is detect if the mouse's path crosses one of a rectangle's edges.
+
 
 ----------------------------------------------------------------------------------------------------
-#### How do we negotiate wrap order and wrap radius for many tracks which wrap around the same obstacles?
+#### How do we negotiate wrapping for tracks which wrap around the same obstacles?
 
+Wrap order and radius can be determined separately for each obstacle.
 
-----------------------------------------------------------------------------------------------------
-#### How do we calculate the impact of a change on track routes, such as moving a components or routing a track inside a pre-existing wrap?
+To determine wrap order, we ignore the effect of radius. Obstacles are modelled as points, and tracks are straight lines between these points. This is equivalent to moving the components away from each other (or stretching the board out, if you will).
+
+Determine if any set of tracks form an entrance or exit bus. An entrance bus is a set of tracks which are coming from the same obstacle, and an exit bus is a set of tracks which are going to the same obstacle. Busses are treated like a single wide track, and the ordering of tracks within the bus is preserved along the length of the bus.
+
+For each track (or bus), determine the angles of entrance and exit. This is the angle of a straight line drawn between the target obstacle and the other (source or destination) obstacle. Note that these angles are only relevant for determining wrap order; there is no guarantee that they will correspond to the actual entrance and exit angles after accounting for wrap radius.
+
+A valid wrap order is one which resembles a stack: tracks can only be pushed onto, and popped from, the top of the stack. If there is no such ordering, then the board description is invalid and bad stuff should happen.
+
+Wrap radius is very simple: simply sum the track width and spacing for all inner wraps. There are a few extra details, but these are so simple that they don't need to be described.
+
+Todo: explain how to detect and account for cascading wraps (an inner wrap increases an outer track's wrap radius to increase, and thus introduces a wrap into an adjacent stretch of the track). How do we efficiently determine when cascade is completed and will not produce any more wraps? 
 
 
 ----------------------------------------------------------------------------------------------------

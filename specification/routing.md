@@ -1,3 +1,16 @@
+#### What is the UX for beginning/pausing/completing a route?
+
+In short:
+
+- Click on an obstacle or airwire to create and route a track on that net.
+- Move the mouse along the track's route. The actual relised route will be a topographic simplification of the mouse's path.
+- If the mouse to close to another track, that track will be automatically pushed aside if this is possible. If this is not possible (e.g. the second track is wrapped around an immovable object), the track being routed should follow the mouse as closely as possible while preserve minimum spacing requirements. The editor should not try to automatically route the track around obstacles in order to reach the mouse position; the blocked track should still follow the line from the active obstacle to the mouse.
+- Pressing a key combination should make all fixed obstacles movable. They should act as if they are on springs, and their final locations should be determined by a least-squares fit.
+- To end a track, click on an obstacle or track which is part of the same net.
+- To pause a track so that it can be completed later, click on anything that is not part of the same net. The head of the track will be fixed at this location until the user clicks the head again to continue routing it.
+
+
+----------------------------------------------------------------------------------------------------
 #### How do we determine the stretch when a track is routed around two obstacles, for given wrap radii and wrap directions?
 
 I've solved this problem. Here's the function used to calculate the endpoints of a clockwise-to-anticlockwise stretch:
@@ -95,12 +108,17 @@ Todo: explain how to detect and account for cascading wraps (an inner wrap incre
 
 
 ----------------------------------------------------------------------------------------------------
-#### What is the UX for beginning/pausing/completing a route?
+#### How do we select and manipulate a set of tracks?
 
+We want to slick quite closely to the 'shift+click' and 'control+click' paradigms, as most users will expect and be familiar with this. However, there are a few different scenarios which need to be examined.
 
-----------------------------------------------------------------------------------------------------
-#### How do we select and manipulate a set of tracks, as a bus?
+The simplest case is when the user selects a set of adjacent tracks while not in 'route' mode. This is done with a simple control+click on each track. If the user clicks on one track then holds down shift while selecting the next track, a line is drawn between the two click locations. Any tracks which cross this line are added to the selection.
 
+What if the user selects tracks which are on opposite sides of the board, and tries to route them as a bus? This must be disallowed, because it has no meaning and we can't determine what the user it trying to do. The editor should produce an error message when the user tries to switch to the router tool. (To be clear: this doesn't preclude non-routing operations on those tracks.)
+
+When the user is in routing mode, they should be able to select other tracks by holding down the shift or control keys. This will put the user into a special selection mode, but it will not stop the selected tracks from following the mouse. In this manner, tracks selected while in routing mode are guaranteed to be adjacent and therefore a valid bus. However, it is possible that the resulting bus may be too wide to be effectively routed; this is a problem left for the user.
+
+As much as possible, operations which work on a track should work on a set of tracks. This includes operations like rip-up, changing the PCB layer, and editing track properties.
 
 ----------------------------------------------------------------------------------------------------
 #### How do we allow the user to push other tracks aside when routing a track?

@@ -92,7 +92,7 @@ Todo: explain how to detect and account for cascading wraps (an inner wrap incre
 #### When a user presses undo after routing a track, how much is undone? If it is undone one stretch+wrap at a time, how do we determine the length and position of the hanging stretch?
 
 ----------------------------------------------------------------------------------------------------
-#### Joining tracks: what is the UX? What is the form of a join? Can we afford to have curved joins, considering that they will require polygons and not just paths?"
+#### Joining tracks: what is the UX? What is the form of a join? Can we afford to have curved joins, considering that they will require polygons and not just paths?
 
 
 ----------------------------------------------------------------------------------------------------
@@ -121,7 +121,7 @@ When the user is in routing mode, they should be able to select other tracks by 
 As much as possible, operations which work on a track should work on a set of tracks. This includes operations like rip-up, changing the PCB layer, and editing track properties.
 
 ----------------------------------------------------------------------------------------------------
-#### How do we allow the user to push other tracks aside when routing a track?
+#### How do we allow the user to push other tracks aside when routing a track? How do we determine which tracks cannot be pushed aside?
 
 This will probably involve creating a 'virtual' obstacle at the head of the active track.
 

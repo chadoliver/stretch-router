@@ -96,18 +96,6 @@ Todo: explain how to detect and account for cascading wraps (an inner wrap incre
 
 
 ----------------------------------------------------------------------------------------------------
-#### How do we determine which routes are impassable?
-
-
-----------------------------------------------------------------------------------------------------
-#### More generally, how do we determine keep-out regions, such as those around obstacles from a different net?
-
-
-----------------------------------------------------------------------------------------------------
-#### What happens when the user moves their mouse over a keep-out region while routing a track?
-
-
-----------------------------------------------------------------------------------------------------
 #### How do we select and manipulate a set of tracks?
 
 We want to slick quite closely to the 'shift+click' and 'control+click' paradigms, as most users will expect and be familiar with this. However, there are a few different scenarios which need to be examined.
@@ -119,6 +107,29 @@ What if the user selects tracks which are on opposite sides of the board, and tr
 When the user is in routing mode, they should be able to select other tracks by holding down the shift or control keys. This will put the user into a special selection mode, but it will not stop the selected tracks from following the mouse. In this manner, tracks selected while in routing mode are guaranteed to be adjacent and therefore a valid bus. However, it is possible that the resulting bus may be too wide to be effectively routed; this is a problem left for the user.
 
 As much as possible, operations which work on a track should work on a set of tracks. This includes operations like rip-up, changing the PCB layer, and editing track properties.
+
+
+----------------------------------------------------------------------------------------------------
+#### How do we determine which routes are invalid?
+
+The solution is based on critical cuts. A _critical cut_ is the line between the closest points on two obstacles. If all critical cuts on a route are wide enough to fit the track which is being routed (after taking into account the tracks which already pass through the critical cut), then the track is valid. Conversely, if any critical cut on the route is not wide enough, the route as a whole is impassible.
+
+For a pair of obstacles which both have convex hulls, there is only a single critical cut. Most obstacles have convex hulls. However, if an obstacle has a concave hull then there is potential for impassible routes to be passable and vice versa: a via may be placed in the area enclosed by the concave section of the hull, and thus alter the number of tracks passing between different pairs of points.
+
+In order to adjust for concave hulls, each via positioned between two obstacles must cause an extra critical cut to be generated. The critical cut must be placed on the other side of the via from the first critical cut.
+
+It is important to remember that points are not the same as vertices. A critical cut might run between of a vertex of one obstacle, and a point on a line segment of the other obstacle.
+
+It is conceivable that some critical cuts may appear valid, but may be in fact impassable due to minimum track curvature. This issue will be discussed in the section discussing all aspects of minimum track curvature.
+
+
+----------------------------------------------------------------------------------------------------
+#### More generally, how do we determine keep-out regions, such as those around obstacles from a different net?
+
+
+----------------------------------------------------------------------------------------------------
+#### What happens when the user moves their mouse over a keep-out region while routing a track?
+
 
 ----------------------------------------------------------------------------------------------------
 #### How do we allow the user to push other tracks aside when routing a track? How do we determine which tracks cannot be pushed aside?

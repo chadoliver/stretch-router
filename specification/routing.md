@@ -126,6 +126,35 @@ It is conceivable that some critical cuts may appear valid, but may be in fact i
 ----------------------------------------------------------------------------------------------------
 #### How do we determine whether the track being routed intersects a keep-out region?
 
+First, what is a keep-out region? It is a region which cannnot legally contain the object being routed or moved. Usually, this is due to the fact that tracks and other objects require a minimum clearance in order to prevent manufacturing errors. 
+
+For a circular object with a radius of 15mm and a minimum clearance of 5mm, the keep-out region is a circle with a 20mm radius. For compound objects, the keepout region is comprised of circles and straight lines. The circles are positioned at each vertex, and the straight lines are stretches joining the circles. Track stretches and wraps are equivalent to the edges and vertices of compound objects. 
+
+It is important to note that most objects will _not_ have a keep-out region when the track which is being routed is from the same net. This is because a short-circuit cause by insufficient clearance would not have any impact on the circuit. 
+
+Now, how do we detect when the track intersects a keepout region?
+
+We assume that the completed segments of the track do not intersect keep out regions, as this should have been picked up while they were being routed. Therefore we are only concerned with the last wrap and stretch.
+
+We assume that the stretch will only intersect with a keepout region if the mouse path does so. Any other potential intersections would result in a new wrap, so they should have been detected by the trigger map. (As an aside, this means that the main loop needs to check for wraps before it checks for keep-out intersections).
+
+Combined, these assumptions mean that we only have to check whether any keepout regions are intersected by the mouse delta (the vector between the previous mouse position and the current mouse position). 
+
+Here is an algorithm which implements these ideas:
+
+1. When the board is first loaded, construct an R-tree of all objects that could produce keep-out regions. This includes tracks, pads, holes, any anything else I can think of.
+2. As changes are made to the board, they should be reflected in the R-tree.
+3. While routing a track, do the following each time the mouse is moved:
+    1. Calculate the mouse delta path.
+    2. Calculate the bounding box for the delta path.
+    3. Select the leaves in the R-tree which intersect the delta path's bounding box.
+    4. For each select leaf, determine whether the last stretch of the track intersects with the leaf object.
+    5. Keep a record of the intersection which maximally trims the track. All other intersections may be discarded.
+
+In order to increase the performance of the R-tree, objects should be broken down into their component primatives, and each primative should be stored separately. It may also be useful to keep track of the rectangles which do _not_ contain obstacles: if both ends of the mouse delta path are in an empty rectangle, there is no need to traverse the R-tree.
+
+I do not know how to account for the fact that the track which is being routed has its own keep-out zone. One possible solution is simply to increase the size of the delta path bounding box, then adjust the positions of any objects selected from the R-tree.
+
 
 ----------------------------------------------------------------------------------------------------
 #### What happens when the user moves their mouse over a keep-out region while routing a track?

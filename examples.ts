@@ -161,8 +161,6 @@ module examples {
             annotation.lineTo(tangent.end);
             annotation.lineTo(obs.right);
             annotation.lineTo(obs.left);
-            //annotation.lineTo(tangent.start);
-            //annotation.lineTo(tangent.end);
             
             
             // paint everything to the screen.

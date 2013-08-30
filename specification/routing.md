@@ -221,6 +221,14 @@ selected from the R-tree.
 ----------------------------------------------------------------------------------------------------
 #### What happens when the user moves their mouse over a keep-out region while routing a track?
 
+Different objects have different degrees of movability, and this determines their behaviour when the routed track intersects their keep-out region. Some objects are absolutely immovable, some objects may be pushed aside at any time, and other objects may only be pushed aside when a special modifier key is held down. 
+
+Each object has a default movability, but when adjacent to other objects they will adopt the minimum level of movability found in the group of adjacent objects. This reflects our intuition of how objects behave in real life.
+
+(Examine each class of obstacle in turn, and explain how they act.)
+
+Question: what objects should act as if they are on springs? Should _all_ objects act in this way?
+
 
 ----------------------------------------------------------------------------------------------------
 #### How do we allow the user to push other tracks aside when routing a track? How do we determine which tracks cannot be pushed aside?
@@ -248,7 +256,8 @@ This will probably involve creating a 'virtual' obstacle at the head of the acti
 #### How do we implement auto-complete? How can we make the results predictable?
 
 
-
+----------------------------------------------------------------------------------------------------
+#### Do we need to implement minimum curve radii? How would we do this?
 
 
 

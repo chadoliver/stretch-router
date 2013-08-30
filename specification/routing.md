@@ -167,7 +167,7 @@ This will probably involve creating a 'virtual' obstacle at the head of the acti
 
 
 ----------------------------------------------------------------------------------------------------
-#### How do we allow the user to move a track onto to the other side of an obstacle? How does this work when operating on multiple tracks at once?
+#### How do we allow the user to move a track onto the other side of an obstacle? How does this work when operating on multiple tracks at once?
 
 
 ----------------------------------------------------------------------------------------------------

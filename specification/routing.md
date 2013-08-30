@@ -61,7 +61,7 @@ The config object is the same as described above, which is passed into the chose
 ----------------------------------------------------------------------------------------------------
 #### How do we determine when a track needs to wrap around an obstacle?
 
-First, we need the concept of an ```active obstacle```. When routing a track, the active obstacle is the last obstacle which the track is wrapped around. Initially the active obstacle is just the obstacle which the track starts from, but each time the track wraps around an obstacle that obstacle becomes the active one.
+First, we need the concept of an _active obstacle_. When routing a track, the active obstacle is the last obstacle which the track is wrapped around. Initially the active obstacle is just the obstacle which the track starts from, but each time the track wraps around an obstacle that obstacle becomes the active one.
 
 A new wrap will be made as soon as the last segment of the track intersects an obstacle. This is easiest to see if one considers a track which passes through the center of the active obstacle; the last segment is then just a straight line from the center of the active obstacle to the mouse position. 
 

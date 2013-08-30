@@ -124,7 +124,7 @@ It is conceivable that some critical cuts may appear valid, but may be in fact i
 
 
 ----------------------------------------------------------------------------------------------------
-#### More generally, how do we determine keep-out regions, such as those around obstacles from a different net?
+#### How do we determine whether the track being routed intersects a keep-out region?
 
 
 ----------------------------------------------------------------------------------------------------
@@ -138,7 +138,7 @@ This will probably involve creating a 'virtual' obstacle at the head of the acti
 
 
 ----------------------------------------------------------------------------------------------------
-#### How do we allow the user to make small changes to a track's route, such as moving it to the other side of an obstacle? How does this work when operating on multiple tracks at once?
+#### How do we allow the user to move a track onto to the other side of an obstacle? How does this work when operating on multiple tracks at once?
 
 
 ----------------------------------------------------------------------------------------------------

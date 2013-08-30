@@ -18,8 +18,7 @@ the track will be fixed at this location until the user clicks the head again to
 
 
 ----------------------------------------------------------------------------------------------------
-#### How do we determine the stretch when a track is routed around two obstacles, for given wrap radii and wrap 
-directions?
+#### How do we determine the stretch when a track is routed around two obstacles, for given wrap radii and wrap directions?
 
 I've solved this problem. Here's the function used to calculate the endpoints of a clockwise-to-anticlockwise stretch:
 
@@ -118,12 +117,10 @@ cascade is completed and will not produce any more wraps?
 
 
 ----------------------------------------------------------------------------------------------------
-#### When a user presses undo after routing a track, how much is undone? If it is undone one stretch+wrap at a time, 
-how do we determine the length and position of the hanging stretch?
+#### When a user presses undo after routing a track, how much is undone? If it is undone one stretch+wrap at a time, how do we determine the length and position of the hanging stretch?
 
 ----------------------------------------------------------------------------------------------------
-#### Joining tracks: what is the UX? What is the form of a join? Can we afford to have curved joins, considering that 
-they will require polygons and not just paths?
+#### Joining tracks: what is the UX? What is the form of a join? Can we afford to have curved joins, considering that they will require polygons and not just paths?
 
 
 ----------------------------------------------------------------------------------------------------
@@ -227,7 +224,7 @@ selected from the R-tree.
 
 ----------------------------------------------------------------------------------------------------
 #### How do we allow the user to push other tracks aside when routing a track? How do we determine which tracks cannot 
-be pushed aside?
+#### be pushed aside?
 
 This will probably involve creating a 'virtual' obstacle at the head of the active track.
 
@@ -242,7 +239,7 @@ This will probably involve creating a 'virtual' obstacle at the head of the acti
 
 ----------------------------------------------------------------------------------------------------
 #### How do we allow the user to move a track onto the other side of an obstacle? How does this work when operating on 
-multiple tracks at once?
+#### multiple tracks at once?
 
 
 ----------------------------------------------------------------------------------------------------

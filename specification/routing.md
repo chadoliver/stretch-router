@@ -223,14 +223,13 @@ selected from the R-tree.
 
 
 ----------------------------------------------------------------------------------------------------
-#### How do we allow the user to push other tracks aside when routing a track? How do we determine which tracks cannot 
-#### be pushed aside?
+#### How do we allow the user to push other tracks aside when routing a track? How do we determine which tracks cannot be pushed aside?
 
 This will probably involve creating a 'virtual' obstacle at the head of the active track.
 
 
 ----------------------------------------------------------------------------------------------------
-#### How do we route a track so that it wraps inside other tracks?
+#### How do we route a track between an obstacle and pre-existing wraps?
 
 
 ----------------------------------------------------------------------------------------------------
@@ -238,8 +237,7 @@ This will probably involve creating a 'virtual' obstacle at the head of the acti
 
 
 ----------------------------------------------------------------------------------------------------
-#### How do we allow the user to move a track onto the other side of an obstacle? How does this work when operating on 
-#### multiple tracks at once?
+#### How do we allow the user to move a track onto the other side of an obstacle? How does this work when operating on multiple tracks at once?
 
 
 ----------------------------------------------------------------------------------------------------

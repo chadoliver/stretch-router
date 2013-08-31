@@ -221,24 +221,25 @@ selected from the R-tree.
 ----------------------------------------------------------------------------------------------------
 #### What happens when the user moves their mouse over a keep-out region while routing a track?
 
-Different objects have different degrees of movability, and this determines their behaviour when the routed track intersects their keep-out region. Some objects are absolutely immovable, some objects may be pushed aside at any time, and other objects may only be pushed aside when a special modifier key is held down. 
+Different objects have different degrees of movability, and this determines their behaviour when the routed track intersects their keep-out region. Some objects are absolutely immovable, some objects may be pushed aside at any time, and other objects may only be pushed aside when a special modifier key is held down. In addition, obstacles have a default position that they will try to return to, but tracks only attempt to minimise their path length within a given topographic route.
 
 Each object has a default movability, but when adjacent to other objects they will adopt the minimum level of movability found in the group of adjacent objects. This reflects our intuition of how objects behave in real life.
 
-(Examine each class of obstacle in turn, and explain how they act.)
+By default, tracks may be pushed aside at any time. They have an initial topology, but no preferred position. The track being routed will have a 'virtual obstacle' at its tip. If the tip intersects the keep-out region of a movable track, that track will wrap around the virtual obstacle. In this sense, pushed tracks are entirely passive: they will attempt to accomodate the routed track as much as possible. Each time the virtual object moves, each track and bus is tested to determine whether it still needs to wrap around the virtual obstacle.
 
-Question: what objects should act as if they are on springs? Should _all_ objects act in this way?
+By default, vias may be pushed aside at any time, and obstacles may only be pushed aside when a special modifier key is held down. Both vias and obstacles are partially active in the routing process: they will 'push back' based on their own utility functions. Vias will push back in a manner which shortens the sum of all path lengths. Obstacles will try to return to their initial position, as if they were on springs. However, neither vias or obstacles will attempt to change the _topographic_ route of any track.
+
+If the routed track intersects the keep-out region of an immovable obstacle, the routed track should be dynamically 'trimmed' so that it appears to stop at the boundary. 
+
+I need to do more work on how vias and obstacles negotiate their positions when their utility functions conflict.
+
+I also need to determine how immovability is propagated through adjacent objects, especially considering that this immovability must be directional.
 
 
 ----------------------------------------------------------------------------------------------------
-#### How do we allow the user to push other tracks aside when routing a track? How do we determine which tracks cannot be pushed aside?
+#### How do we route a track between an obstacle and other pre-existing wraps?
 
-This will probably involve creating a 'virtual' obstacle at the head of the active track.
-
-
-----------------------------------------------------------------------------------------------------
-#### How do we route a track between an obstacle and pre-existing wraps?
-
+It must be possible for a track to exit a wrap by angling inwards, not outwards.
 
 ----------------------------------------------------------------------------------------------------
 #### How do we determine when a wrap is no longer needed?

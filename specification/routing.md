@@ -261,6 +261,18 @@ It must be possible for a track to exit a wrap by angling inwards, not outwards.
 #### Do we need to implement minimum curve radii? How would we do this?
 
 
+----------------------------------------------------------------------------------------------------
+#### How do we determine the optimal position for vias?
+
+(It would be great if there were some way to analytically determine the optimal position, but I expect that we will be forced to use iterative methods instead.)
+
+We can model tracks as elastic bands which exert a force when pushed aside. If a track _X_ has to bend north in order to avoid a via and its associated track _Y_, then track _X_ will exert a force pointing southwards.
+
+
+----------------------------------------------------------------------------------------------------
+#### How do we determine the position of obstacles which are pushed aside?
+
+
 
 
 

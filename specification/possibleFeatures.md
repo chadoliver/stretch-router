@@ -1,4 +1,3 @@
-
 Possible Features
 =================
 
@@ -18,20 +17,20 @@ A _trigger line_ is an imaginary line which, if crossed with the mouse, will cau
 
 ### Routing The Tracks
 
-- A method for determining the stretch and wrap when a line is routed around two obstacles, for given wrap radii and wrap directions.
-- A method to calculate trigger lines, and determine when the mouse crosses one.
-- Hanging tracks: when a user undos the most recent wrap, the exposed stretch should be shortened to an appropriate length, and perhaps rotated so that it doesn't affect other tracks.
-- A method to recalculate wraps when a component is moved.
-- A method to calculate the cascading impact of a particular change, such as routing a track inside a pre-existing wrap.
-- A method to negotiate wrap order and radius, with an obvious focus on avoiding 'impossible' wraps.
-- Joining tracks: what is the UX? What is the form of a join? Can we afford to have curved joins, considering that they will require polygons and not just paths?
-- A method for determining which critical cuts are impassable.
-- More generally, a method for determining keep-out regions, including those around obstacles from a different net.
-- What happens when the user moves their mouse over a keep-out region?
 - What is the UX for beginning/pausing/completing a route?
-- A method for pushing tracks aside. This will probably involve creating a 'virtual' obstacle at the head of the active track.
-- A method for segmenting tracks (e.g. as a consequence of creating a three-way intersection), and relating segments together.
-- A method for selecting and routing a set of tracks, as a bus.
+- How do we determine the stretch when a track is routed around two obstacles, for given wrap radii and wrap directions?
+- How do we determine when a track needs to wrap around an obstacle?
+- How do we negotiate wrapping for tracks which wrap around the same obstacles?
+- When a user presses undo after routing a track, how much is undone? If it is undone one stretch+wrap at a time, how do we determine the length and position of the hanging stretch?
+- Joining tracks: what is the UX? What is the form of a join? Can we afford to have curved joins, considering that they will require polygons and not just paths?
+- How do we determine which routes are impassable?
+- More generally, how do we determine keep-out regions, such as those around obstacles from a different net?
+- What happens when the user moves their mouse over a keep-out region while routing a track?
+- How do we select and manipulate a set of tracks?
+- How do we allow the user to push other tracks aside when routing a track? How do we determine which tracks cannot be pushed aside?
+- How do we allow the user to make small changes to a track's route, such as moving it to the other side of an obstacle? How does this work when operating on multiple tracks at once?
+- How do we deal with nets which have multiple intersecting tracks?
+- How do we implement auto-complete? How can we make the results predictable?
 
 ### Moving Elements
 

@@ -264,9 +264,11 @@ It must be possible for a track to exit a wrap by angling inwards, not outwards.
 ----------------------------------------------------------------------------------------------------
 #### How do we determine the optimal position for vias?
 
-(It would be great if there were some way to analytically determine the optimal position, but I expect that we will be forced to use iterative methods instead.)
+We don't. There is no analytic solution, so the positions must be found iteratively. That's not feasible to do client-side, and doing it server-side would really destroy the UX. So, let's skip this feature.
 
-We can model tracks as elastic bands which exert a force when pushed aside. If a track _X_ has to bend north in order to avoid a via and its associated track _Y_, then track _X_ will exert a force pointing southwards.
+Vias will act like normal obstacles, and may be pushed aside when a modifier key is held down. This ensures that vias will not block routes if the route is topographically valid.
+
+It would be reasonable to have a button which, when pressed, will trigger a server-side optimisation. For example, this might be used before a board is sent for manufacture.
 
 
 ----------------------------------------------------------------------------------------------------

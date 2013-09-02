@@ -21,12 +21,4 @@ It important to note that I have no interest in building a startup around this (
 
 Hardware description language are used a lot in IC design, because they provide powerful tools for managing complexity. However, all schematic capture applications for PCB design use a graphical interface. This presents an interesting trade-off: the traditional interface that everyone knows how to use, or the powerful interface that makes it easier to manage complexity?
 
-If I started with a graphical editor, I would present Vulcan as a product suitable for inexperienced users. These users are unlikely to be interested in a HDL. However, I could probably get a few dedicated users by branding my product as a radical rethink of the whole design process, and I could build a solid niche product on this branding. It would be straightforward enough to expand downmarket at a later time.
-
-
-
-
-
-
-
-
+If I started with a graphical editor, I would present Vulcan as a product suitable for inexperienced users. These users are unlikely to be interested in a HDL. However, if I started with HDL schematics, I could probably get a few dedicated users by branding my product as a radical rethink of the whole design process. I could build a solid niche product on this branding, and it would be straightforward enough to expand downmarket at a later time.

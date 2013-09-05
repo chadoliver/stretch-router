@@ -1,4 +1,3 @@
-
 #### For storage and collaboration, what constitutes an 'action'? Is this compatible with Operational Transforms?
 
 
@@ -8,6 +7,10 @@
 
 ----------------------------------------------------------------------------------------------------
 #### How do we prevent edit conflicts? Should we attach mutexes to each track and obstacle?
+
+
+----------------------------------------------------------------------------------------------------
+#### How do we indicate that a collaborator is editing a particular component?
 
 
 ----------------------------------------------------------------------------------------------------
@@ -24,6 +27,8 @@
 
 ----------------------------------------------------------------------------------------------------
 #### How can we allow users on different server to collaborate?
+
+(It should be possible for someone to clone the project and run it locally, then collaborate with someone else who has done the same thing.)
 
 
 ----------------------------------------------------------------------------------------------------

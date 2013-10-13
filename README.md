@@ -25,3 +25,5 @@ Even though I'm not writing code at the moment, fleshing out the spec has forced
 A few weeks ago, I also spent some days playing around with the algorithm for wrapping a track around circular obstacles. This is the (tiny) core of the whole program, and I am proud to announce that _it works_:
 
 ![Test image for track wrapping](http://chadoliver.github.io/vulcan/images/wrapped_track.png)
+
+
